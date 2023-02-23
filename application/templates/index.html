@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <title></title>
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/admin-lte@3.2/dist/css/adminlte.min.css">
+        <style>
+            div{
+                /* margin:20px; */
+            }
+            .m10{
+                margin:10px;
+            }
+            .op50{
+                opacity:50%;
+            }
+            .w25{
+                width:25%;
+            }
+            .w50{
+                width:50%;
+            }
+        </style>
+    </head>
+    <body>
+        <h2 class="m10">顔認識アプリケーション</h2><br/>
+        <h2 class="m10">TrackingTypeを選択</h2>
+        <!-- <form> -->
+        <div style="display:flex;width:25%;">
+            <button id="btnPerson" class="m10 btn btn-info btnTrack" val="0">人物</button>
+            <button id="btnFace" class="op50 m10 btn btn-success btnTrack" val="1">顔</button>
+            <input type="hidden" id="trackingtype" value="0">
+        </div>
+        <h2 class="m10 w25">ファイルを選択</h2>
+        <div class="custom-file w25">
+            <input type="file" class="custom-file-input" id="inputFile">
+            <label class="custom-file-label" for="inputFile">Choose file</label>
+        </div>
+        <button id="upload" class="m10 btn btn-info btnTrack">ファイルアップロード</button>
+        <h2 class="m10 w25">結果</h2>
+        <table class="table table-bordered w50">
+            <thead>
+            <tr>
+            <th style="width: 10px">#</th>
+            <th>UploadFile</th>
+            <th>TrackingFile</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr>
+                <td>
+                    1.
+                </td>
+                <td>
+                    Update software
+                </td>
+                <td>
+                    <div class="progress progress-xs">
+                        <div class="progress-bar progress-bar-danger" style="width: 55%"></div>
+                    </div>
+                </td>
+                </tr>
+            </tbody>
+            </table>
+        <!-- </form> -->
+        <script
+        src="https://code.jquery.com/jquery-3.6.3.min.js"
+        integrity="sha256-pvPw+upLPUjgMXY0G+8O0xUf+/Im1MZjXxxgOcBQBXU="
+        crossorigin="anonymous"></script>
+        <script src="https://cdn.jsdelivr.net/npm/admin-lte@3.2/dist/js/adminlte.min.js"></script>
+        <script>
+            $('#inputFile').change(function(){
+                let name =$(this).prop('files')[0].name;
+                $(".custom-file-label").text(name);
+            });
+            $(".btnTrack").click(function() {
+                let val = $(this).attr("val");
+                if(val == 0){
+                    $('#btnPerson').removeClass("op50");
+                    $('#btnFace').addClass("op50");
+                   
+                }else{
+                    $('#btnFace').removeClass("op50");
+                    $('#btnPerson').addClass("op50");
+                }
+                $('#trackingtype').val(val);
+            });
+            $('#upload').click(function(){
+                
+                let upfile = $('#inputFile');
+                let fd = new FormData();
+                fd.append("upfile", upfile.prop('files')[0]);
+                $.ajax({
+                    url:'upload',
+                    type:'post',
+                    data: fd,
+                    processData: false,
+                    contentType: false,
+                    cache: false,
+                }).done(function (data) {
+                    // 成功時の処理
+                    alert("success");
+                }).fail(function() {
+                    alert("upload error");
+                });
+            });
+        </script>
+
+    </body>
+</html>
