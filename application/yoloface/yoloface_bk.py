@@ -66,7 +66,7 @@ net.setPreferableTarget(cv2.dnn.DNN_TARGET_CPU)
 
 def _main():
     wind_name = 'face detection using YOLOv3'
-    #cv2.namedWindow(wind_name, cv2.WINDOW_NORMAL)
+    cv2.namedWindow(wind_name, cv2.WINDOW_NORMAL)
     output_file = ''
 
     if args.image:
@@ -116,6 +116,13 @@ def _main():
 
         # Remove the bounding boxes with low confidence
         faces = post_process(frame, outs, CONF_THRESHOLD, NMS_THRESHOLD)
+        print("----------------------")
+        for face in faces:
+            print(len(face))
+            print("----------------------")
+            for fac in face:
+                print(fac)
+
         print('[i] ==> # detected faces: {}'.format(len(faces)))
         print('#' * 60)
         # initialize the set of information we'll displaying on the frame
@@ -131,11 +138,13 @@ def _main():
         # Save the output video to file
         if args.image:
             cv2.imwrite(os.path.join(args.output_dir, output_file), frame.astype(np.uint8))
+
+
         else:
             video_writer.write(frame.astype(np.uint8))
 
-        #cv2.imshow(wind_name, frame)
-
+        cv2.imshow(wind_name, frame)
+        
         key = cv2.waitKey(1)
         if key == 27 or key == ord('q'):
             print('[i] ==> Interrupted by user!')
