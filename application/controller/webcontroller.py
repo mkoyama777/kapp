@@ -28,6 +28,7 @@ def reset():
     else:
         key = str(uuid.uuid1())
         session['uuid'] = key
+        print()
 
     new_dir_path = UPLOAD_FOLDER+"/"+key
     new_output_path = OUTPUT_FOLDER+"/"+key
