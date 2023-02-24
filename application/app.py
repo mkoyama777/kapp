@@ -14,7 +14,7 @@ import controller.webcontroller as webctl
 
 UPLOAD_FOLDER = 'upload'
 OUTPUT_FOLDER = 'output'
-ALLOWED_EXTENSIONS = { '.png', '.jpg', '.jpeg', '.gif','.mp4'}
+ALLOWED_EXTENSIONS = {'.jpg', '.jpeg','.mp4'}
 
 app = Flask(__name__)
 app.secret_key = 'user'
