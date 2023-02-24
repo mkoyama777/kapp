@@ -14,6 +14,9 @@
             .m10{
                 margin:10px;
             }
+            .mt50{
+                margin-top:50px;
+            }
             .op50{
                 opacity:50%;
             }
@@ -23,55 +26,60 @@
             .w50{
                 width:50%;
             }
+            .w100{
+                width:100%;
+            }
+            .flash{
+                animation: flash 1s ease infinite;
+            }
+            @keyframes flash {
+                0%,100% {
+                    opacity: 1;
+                }
+                50% {
+                    opacity: 0;
+                }
+            }
         </style>
     </head>
     <body>
         <h2 class="m10">顔認識アプリケーション</h2><br/>
-        <h2 class="m10">TrackingTypeを選択</h2>
-        <!-- <form> -->
+        <!-- <h2 class="m10">TrackingTypeを選択</h2>
+
         <div style="display:flex;width:25%;">
             <button id="btnPerson" class="m10 btn btn-info btnTrack" val="0">人物</button>
             <button id="btnFace" class="op50 m10 btn btn-success btnTrack" val="1">顔</button>
             <input type="hidden" id="trackingtype" value="0">
-        </div>
-        <h2 class="m10 w25">ファイルを選択</h2>
+        </div> -->
+        <h2 class="m10 w100">アップロードするとトラッキングしたファイルが生成されます</h2>
         <div class="custom-file w25">
-            <input type="file" class="custom-file-input" id="inputFile">
+            <input type="file" class="custom-file-input" name="upfile" id="inputFile">
             <label class="custom-file-label" for="inputFile">Choose file</label>
         </div>
-        <button id="upload" class="m10 btn btn-info btnTrack">ファイルアップロード</button>
-        <h2 class="m10 w25">結果</h2>
-        <table class="table table-bordered w50">
+        <button id="btnupload" class="m10 btn btn-info">ファイルアップロード</button>
+        <h2 class="mt50 w25">結果</h2>
+        <table class="table table-bordered w50" id="resultTbl" >
             <thead>
             <tr>
             <th style="width: 10px">#</th>
             <th>UploadFile</th>
             <th>TrackingFile</th>
+            <th></th>
             </tr>
             </thead>
             <tbody>
-            <tr>
-                <td>
-                    1.
-                </td>
-                <td>
-                    Update software
-                </td>
-                <td>
-                    <div class="progress progress-xs">
-                        <div class="progress-bar progress-bar-danger" style="width: 55%"></div>
-                    </div>
-                </td>
-                </tr>
+             
             </tbody>
             </table>
-        <!-- </form> -->
+
         <script
         src="https://code.jquery.com/jquery-3.6.3.min.js"
         integrity="sha256-pvPw+upLPUjgMXY0G+8O0xUf+/Im1MZjXxxgOcBQBXU="
         crossorigin="anonymous"></script>
         <script src="https://cdn.jsdelivr.net/npm/admin-lte@3.2/dist/js/adminlte.min.js"></script>
         <script>
+            $('#resultTbl').hide();
+            setInterval(check,3000);
             $('#inputFile').change(function(){
                 let name =$(this).prop('files')[0].name;
                 $(".custom-file-label").text(name);
@@ -88,25 +96,122 @@
                 }
                 $('#trackingtype').val(val);
             });
-            $('#upload').click(function(){
+            $(document).on('click', '.btn-delete' , function() {
                 
-                let upfile = $('#inputFile');
-                let fd = new FormData();
-                fd.append("upfile", upfile.prop('files')[0]);
+                const fdata = new FormData();
+                fdata.append("fname", $(this).attr('fname'));
+
+                $.ajax({
+                    url:'delfile',
+                    type:'POST',
+                    data:fdata,
+                    cache:false,
+                    // contentType:"multipart/form-data",
+                    processData:false,
+                    contentType:false,
+
+                }).done(function (data) {
+                    let objData = JSON.parse(data);
+                    let fnames = objData.filenames;
+                    refleshTbl(fnames);
+                });
+            });
+            $('#btnupload').click(function(){
+                if($('#inputFile').prop('files').length == 0){
+                    alert("ファイルを選択してください");
+                    return;
+                }
+
+                const fdata = new FormData();
+                fdata.append("upfile", $('#inputFile').prop('files')[0]);
+                fdata.append("trackingtype", $('#trackingtype').val());
+
                 $.ajax({
                     url:'upload',
-                    type:'post',
-                    data: fd,
-                    processData: false,
-                    contentType: false,
-                    cache: false,
+                    type:'POST',
+                    data:fdata,
+                    cache:false,
+                    contentType:"multipart/form-data",
+                    processData:false,
+                    contentType:false,
+
                 }).done(function (data) {
-                    // 成功時の処理
-                    alert("success");
+                    let objData = JSON.parse(data);
+                    let fnames = objData.filenames;
+                    $('input[type=file]').val('');
+                    $(".custom-file-label").text("Choose file");
+
+                    refleshTbl(fnames);
                 }).fail(function() {
                     alert("upload error");
                 });
             });
+            function check(){
+                
+                $.ajax({
+                    url:'check',
+                    type:'POST',
+                    cache:false,
+                    contentType:false,
+                    processData:false,
+                    contentType:false,
+
+                }).done(function (data) {
+                    let objData = JSON.parse(data);
+                    let fnames = objData.filenames;
+                    refleshTbl(fnames);
+                }).fail(function() {
+                    alert("upload error");
+                });
+
+            }
+
+
+            function refleshTbl(fnames){
+                $("tbody > tr").remove();
+                    var cnt = 1;
+                    Object.keys(fnames).forEach(function (fname) {
+                        var flg = fnames[fname]
+                        $('#resultTbl').show();
+                        var tr = $('<tr>');
+                        var td1 = $('<td>');
+                        var td2 = $('<td>');
+                        var td3 = $('<td>');
+                        var td4 = $('<td>');
+                        var p   = $('<p>');
+                        var btn = $('<button>');
+                        btn.addClass("btn btn-info btn-delete");
+                        btn.text("削除");
+                        btn.attr("fname",fname);
+                        btn.appendTo(td4);
+                        td3.addClass("flash");
+                        var a = $('<a>')
+                        a.attr("href","download?inputfname="+fname);
+                        a.text(fname);
+                        td1.text(cnt);
+                        a.appendTo(td2);
+                        
+                        if (!flg){
+                            p.text("・・・処理中・・・");
+                            p.appendTo(td3);
+                        }else{
+                            td3.removeClass("flash");
+                            var a_out = $('<a>')
+                            a_out.attr("href","download?outputfname="+flg);
+                            a_out.text(flg);
+                            a_out.appendTo(td3);
+                        }
+                        td1.appendTo(tr);
+                        td2.appendTo(tr);
+                        td3.appendTo(tr);
+                        td4.appendTo(tr);
+                        tr.appendTo($('tbody'));
+                        cnt = cnt + 1;
+                    });
+                    if($("tbody > tr").length == 0){
+                        $('#resultTbl').hide();
+                    }
+            }
         </script>
 
     </body>
