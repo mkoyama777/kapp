@@ -2,7 +2,6 @@
 # $ conda create --name <env> --file <this file>
 # platform: win-64
 flask==2.0.3
-libdeflate==1.8
 libopencv==3.4.2
 libpng==1.6.37
 libtiff==4.5.0
