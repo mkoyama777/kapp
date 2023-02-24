@@ -24,7 +24,8 @@ import sys
 import os
 
 from utils import *
-
+import torch
+from wide_resnet import WideResNet
 #####################################################################
 parser = argparse.ArgumentParser()
 parser.add_argument('--model-cfg', type=str, default='./cfg/yolov3-face.cfg',
@@ -130,7 +131,19 @@ def _main():
 
         # Save the output video to file
         if args.image:
-            cv2.imwrite(os.path.join(args.output_dir, output_file), frame.astype(np.uint8))
+            left   = faces[0][0]
+            top    = faces[0][1]
+            width  = faces[0][2]
+            height = faces[0][3]
+            # print("left:{0} top:{1} width:{2} height:${3}", left, top, width, height)
+            # dst = im[200:400,70:270]
+            dst = frame.astype(np.uint8)[top:top+height, left:left+width]
+            dstblob = cv2.dnn.blobFromImage(dst, 1 / 255, (IMG_WIDTH, IMG_HEIGHT),
+                                [0, 0, 0], 1, crop=False)
+            
+            cv2.imwrite(os.path.join(args.output_dir, output_file),dst)
+            #cv2.imwrite(os.path.join(args.output_dir, output_file), frame.astype(np.uint8))
+            
         else:
             video_writer.write(frame.astype(np.uint8))
 
@@ -147,6 +160,27 @@ def _main():
     print('==> All done!')
     print('***********************************************************')
 
+def age_gender_predict(faces):    
+    if len(faces) > 0:   
+        # モデルの設定
+        if os.isdir("model") == False:
+            pre_model = "https://github.com/yu4u/age-gender-estimation/releases/download/v0.5/weights.28-3.73.hdf5"
+            modhash = 'fbe63257a054c1c5466cfd7bf14646d6'
+            weight_file = get_file("weights.28-3.73.hdf5", pre_model, cache_subdir="model",
+                                   file_hash=modhash, cache_dir=str(Path(__file__).resolve().parent))
+        else:
+            weight_file = "model/weights.28-3.73.hdf5"            
 
+        img_size = np.asarray(faces.shape)[1]
+        model = WideResNet(img_size, depth=16, k=8)()
+        model.load_weights(weight_file)
+
+        # 予測
+        results = model.predict(faces)
+        Genders = results[0]
+        ages = np.arange(0, 101).reshape(101, 1)
+        Ages = results[1].dot(ages).flatten()
+
+    return Ages, Genders
 if __name__ == '__main__':
     _main()
