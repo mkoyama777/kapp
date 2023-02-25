@@ -22,7 +22,7 @@ import time
 import argparse
 import sys
 import os
-
+import subprocess
 
 from yoloface.utils import *
 
@@ -56,6 +56,7 @@ print('----- info -----')
 
 def analyze(filetype,finput,foutputdir,foutputname):
     print("--------tracking start")
+    subprocess.run("pwd")
     if(os.path.exists('./yoloface/cfg/yolov3-face.cfg')): 
         print("cfg exist")
     else:
