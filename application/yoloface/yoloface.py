@@ -56,6 +56,15 @@ print('----- info -----')
 
 def analyze(filetype,finput,foutputdir,foutputname):
     print("--------tracking start")
+    if(os.path.exists('./yoloface/cfg/yolov3-face.cfg')): 
+        print("cfg exist")
+    else:
+        print("cfg no exist")
+    if(os.path.exists('./yoloface/model-weights/yolov3-wider_16000.weights')): 
+        print("weights exist")
+    else:
+        print("weights no exist")
+
     net = cv2.dnn.readNetFromDarknet('./yoloface/cfg/yolov3-face.cfg', './yoloface/model-weights/yolov3-wider_16000.weights')
     print("--------tracking setPreferableBackend opencv start")
     net.setPreferableBackend(cv2.dnn.DNN_BACKEND_OPENCV)
