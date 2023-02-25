@@ -4,6 +4,7 @@ import os
 import random
 import uuid
 import shutil
+import subprocess
 
 from flask import *
 from pathlib import Path
@@ -47,6 +48,10 @@ def delfile():
 @app.route("/download",methods=["GET"])
 def download():
     return webctl.download(request,session,UPLOAD_FOLDER,OUTPUT_FOLDER)
+
+@app.route("/init",methods=["GET"])
+def init():
+    subprocess.run("./yoloface/model_weights/get_models.sh")
 
 if __name__ == "__main__":
     app.run(debug=True)
