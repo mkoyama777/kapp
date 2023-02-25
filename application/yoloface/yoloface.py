@@ -57,9 +57,11 @@ print('----- info -----')
 def analyze(filetype,finput,foutputdir,foutputname):
     print("--------tracking start")
     net = cv2.dnn.readNetFromDarknet('./yoloface/cfg/yolov3-face.cfg', './yoloface/model-weights/yolov3-wider_16000.weights')
+    print("--------tracking setPreferableBackend opencv start")
     net.setPreferableBackend(cv2.dnn.DNN_BACKEND_OPENCV)
+    print("--------tracking  etPreferableTarget cpu start")
     net.setPreferableTarget(cv2.dnn.DNN_TARGET_CPU)
-
+    print("--------tracking makepath")
     # wind_name = 'face detection using YOLOv3'
     #cv2.namedWindow(wind_name, cv2.WINDOW_NORMAL)
     output_file = ''
