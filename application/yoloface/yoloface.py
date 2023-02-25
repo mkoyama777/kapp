@@ -56,7 +56,8 @@ print('----- info -----')
 
 def analyze(filetype,finput,foutputdir,foutputname):
     print("--------tracking start")
-    subprocess.run("pwd")
+    output_str = subprocess.run("pwd")
+    print(output_str)
     if(os.path.exists('./yoloface/cfg/yolov3-face.cfg')): 
         print("cfg exist")
     else:
