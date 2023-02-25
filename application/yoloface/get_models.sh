@@ -20,6 +20,8 @@ wget --load-cookies /tmp/cookies.txt -r "https://docs.google.com/uc?export=downl
 unzip -q $W_FILENAME
 unzip -q $H5_FILENAME
 
+pwd
+
 # Delete .zip files
 rm -rf $W_FILENAME $H5_FILENAME
 
