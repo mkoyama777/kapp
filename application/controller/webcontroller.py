@@ -81,7 +81,8 @@ def upload(request,session,upload_dir,output_dir):
                 outputfilename = changesuffix(filename)
                 # th = threading.Thread(target=yolo.analyze,args=[get_filetype(filename),inputfilepath,outputdir,outputfilename])
                 subprocess.Popen("python ../yoloface/yoloface.py",[get_filetype(filename),inputfilepath,outputdir,outputfilename])
-                subprocess.Popen("yolo.sh",[get_filetype(filename),inputfilepath,outputdir,outputfilename])
+                cmd = ["yolo.sh",get_filetype(filename),inputfilepath,outputdir,outputfilename]
+                subprocess.Popen(cmd,bufsize=1, shell=True)
                 th.start()
                 
 
