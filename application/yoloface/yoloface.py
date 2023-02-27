@@ -23,7 +23,6 @@ import argparse
 import sys
 import os
 import subprocess
-#from yoloface.utils import *
 from utils import *
 #####################################################################
 #parser = argparse.ArgumentParser()
