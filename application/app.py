@@ -13,8 +13,9 @@ from werkzeug.utils import secure_filename
 
 import controller.webcontroller as webctl
 
-UPLOAD_FOLDER = 'upload'
-OUTPUT_FOLDER = 'output'
+parent_dir = "/opt/render/project/src/application/yoloface"
+UPLOAD_FOLDER = parent_dir + '/upload'
+OUTPUT_FOLDER = parent_dir + '/output'
 ALLOWED_EXTENSIONS = {'.jpg', '.jpeg','.mp4'}
 
 app = Flask(__name__)
