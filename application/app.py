@@ -52,10 +52,8 @@ def download():
 @app.route("/init",methods=["GET"])
 def init():
     print("-----------------------init start")
-    output_str = subprocess.run("pwd")
-    print(output_str)
-
-    subprocess.run("./yoloface/get_models.sh")
+    #subprocess.run("./yoloface/get_models.sh")
+    subprocess.Popen("./yoloface/get_models.sh")
     print("-----------------------end")
 
 if __name__ == "__main__":
