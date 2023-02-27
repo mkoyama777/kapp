@@ -4,7 +4,7 @@ import os
 import random
 import uuid
 import shutil
-import yoloface.yoloface as yolo
+# import yoloface.yoloface as yolo
 import threading
 import subprocess
 

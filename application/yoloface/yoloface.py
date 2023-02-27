@@ -23,8 +23,8 @@ import argparse
 import sys
 import os
 import subprocess
+#from yoloface.utils import *
 from utils import *
-
 #####################################################################
 #parser = argparse.ArgumentParser()
 #parser.add_argument('--model-cfg', type=str, default='./cfg/yolov3-face.cfg',
