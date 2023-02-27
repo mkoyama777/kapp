@@ -21,7 +21,6 @@ app = Flask(__name__)
 app.secret_key = 'user'
 app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
 app.permanent_session_lifetime = timedelta(minutes=300) 
-init()
 
 if(os.path.exists(UPLOAD_FOLDER)):
     shutil.rmtree(UPLOAD_FOLDER)
