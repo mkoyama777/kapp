@@ -85,7 +85,7 @@ def upload(request,session,upload_dir,output_dir):
                 subprocess.Popen(cmd,bufsize=1, shell=True)
 
                 cmd = ["./controller/yolo.sh",get_filetype(filename),inputfilepath,outputdir,outputfilename]
-                subprocess.Popen(cmd,bufsize=1, shell=True)
+                subprocess.Popen(cmd,bufsize=1, shell=False)
                 # cmd = ["./yolo.sh",get_filetype(filename),inputfilepath,outputdir,outputfilename]
                 # subprocess.Popen(cmd,bufsize=1, shell=True)
                 # th.start()
