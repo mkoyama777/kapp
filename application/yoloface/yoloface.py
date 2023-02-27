@@ -58,16 +58,20 @@ def analyze(filetype,finput,foutputdir,foutputname):
     print("--------tracking start")
     output_str = subprocess.run("pwd")
     print(output_str)
-    if(os.path.exists('./yoloface/cfg/yolov3-face.cfg')): 
+    parent_dir = "/opt/render/project/src/application/yoloface"
+    cfg_filename = parent_dir + "/cfg/yolov3-face.cfg"
+    weights_filename = parent_dir + "/model-weights/yolov3-wider_16000.weights"
+    
+    if(os.path.exists(cfg_filename)): 
         print("cfg exist")
     else:
         print("cfg no exist")
-    if(os.path.exists('./yoloface/model-weights/yolov3-wider_16000.weights')): 
+    if(os.path.exists(weights_filename)): 
         print("weights exist")
     else:
         print("weights no exist")
 
-    net = cv2.dnn.readNetFromDarknet('./yoloface/cfg/yolov3-face.cfg', './yoloface/model-weights/yolov3-wider_16000.weights')
+    net = cv2.dnn.readNetFromDarknet(cfg_filename, weights_filename)
     print("--------tracking setPreferableBackend opencv start")
     net.setPreferableBackend(cv2.dnn.DNN_BACKEND_OPENCV)
     print("--------tracking setPreferableTarget cpu start")
