@@ -48,5 +48,14 @@ def delfile():
 def download():
     return webctl.download(request,session,UPLOAD_FOLDER,OUTPUT_FOLDER)
 
+@app.route("/init",methods=["GET"])
+def init():
+    print("-----------------------init start ")
+    #subprocess.run("./yoloface/get_models.sh")
+    subprocess.Popen("./yoloface/get_models.sh")
+    print("-----------------------end")
+    return webctl.index(request,session)
+
+
 if __name__ == "__main__":
     app.run(debug=True)
