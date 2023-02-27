@@ -44,7 +44,7 @@ from utils import *
 
 #####################################################################
 # print the arguments
-print('----- info -----')
+print('----- info ----- ')
 #print('[i] The config file: ', args.model_cfg)
 #print('[i] The weights of model file: ', args.model_weights)
 #print('[i] Path to image file: ', args.image)
