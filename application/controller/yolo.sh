@@ -1,6 +1,6 @@
 #!/bin/bash
 pwd
-cd yoloface
+cd /opt/render/project/src/application/yoloface/
 echo $1
 echo $2
 echo $3
