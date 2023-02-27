@@ -83,7 +83,7 @@ def upload(request,session,upload_dir,output_dir):
                 # subprocess.Popen("python ../yoloface/yoloface.py",[get_filetype(filename),inputfilepath,outputdir,outputfilename])
                 cmd = ["yolo.sh",get_filetype(filename),inputfilepath,outputdir,outputfilename]
                 subprocess.Popen(cmd,bufsize=1, shell=True)
-                th.start()
+                # th.start()
                 
 
         return json.dumps({'code':200,'filenames':session["filenames"]})          

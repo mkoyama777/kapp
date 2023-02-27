@@ -55,6 +55,7 @@ def init():
     #subprocess.run("./yoloface/get_models.sh")
     subprocess.Popen("./yoloface/get_models.sh")
     print("-----------------------end")
+    #return webctl.index(request,session)
 
 if __name__ == "__main__":
     app.run(debug=True)
