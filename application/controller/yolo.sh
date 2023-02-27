@@ -1,5 +1,5 @@
 #!/bin/bash
-cd ..
+pwd
 cd yoloface
 echo $1
 echo $2
