@@ -6,6 +6,7 @@ import uuid
 import shutil
 import yoloface.yoloface as yolo
 import threading
+import subprocess
 
 from flask import *
 from pathlib import Path
@@ -78,7 +79,8 @@ def upload(request,session,upload_dir,output_dir):
                     #     {executor.submit(yolo.analyze(get_filetype(filename),inputfilepath,outputfilepath)  ) }
                 print("call analyze")
                 outputfilename = changesuffix(filename)
-                th = threading.Thread(target=yolo.analyze,args=[get_filetype(filename),inputfilepath,outputdir,outputfilename])
+                # th = threading.Thread(target=yolo.analyze,args=[get_filetype(filename),inputfilepath,outputdir,outputfilename])
+                subprocess.Popen("python ../yoloface/yoloface.py",[get_filetype(filename),inputfilepath,outputdir,outputfilename])
                 th.start()
                 
 

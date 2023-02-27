@@ -54,6 +54,8 @@ print('----- info -----')
 
 # check outputs directory
 
+
+    
 def analyze(filetype,finput,foutputdir,foutputname):
     print("--------tracking start")
     output_str = subprocess.run("pwd")
@@ -164,5 +166,17 @@ def analyze(filetype,finput,foutputdir,foutputname):
     print('***********************************************************')
 
 
-# if __name__ == '__main__':
-#     _main()
+if __name__ == '__main__':
+    args = sys.argv
+    print("=========")
+    print(args[1])
+    print(args[2])    
+    print(args[3])    
+    print(args[4])    
+    print("=========end")
+    filetype = args[1]
+    finput = args[2]    
+    foutputdir = args[3]    
+    foutputname = args[4]    
+    
+    analyze(filetype,finput,foutputdir,foutputname)
