@@ -79,7 +79,7 @@ def analyze(filetype,finput,foutputdir,foutputname):
     #cv2.namedWindow(wind_name, cv2.WINDOW_NORMAL)
     output_file = ''
     foutput = foutputdir + "/tmp"+foutputname 
-    
+    print("yoloface----------output---")
     print(abspath(foutput))
     
     cap = None

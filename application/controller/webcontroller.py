@@ -71,6 +71,9 @@ def upload(request,session,upload_dir,output_dir):
         file.save(os.path.join(inputdir, filename))
         inputfilepath = os.path.join(inputdir, filename)
         outputfilepath = os.path.join(outputdir, outputfilename)
+        print("---------webcontroll absolute pathdep")
+        print(abspath(outputdir))
+        print(abspath(outputfilepath))
         if(not os.path.exists(outputdir+"/"+outputfilename)):
             #Tracking
             if (not procflg):
