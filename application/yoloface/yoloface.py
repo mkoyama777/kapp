@@ -56,7 +56,19 @@ print('----- info -----')
 
 def analyze(filetype,finput,foutputdir,foutputname):
     print("--------tracking start ")
-    net = cv2.dnn.readNetFromDarknet('./yoloface/cfg/yolov3-face.cfg', './yoloface/model-weights/yolov3-wider_16000.weights')
+    cfg_file = './yoloface/cfg/yolov3-face.cfg'
+    weight_model_file = './yoloface/model-weights/yolov3-wider_16000.weights'
+    if(os.path.exists(cfg_file)):
+        print("cfgfile exist")
+    else:
+        print("cfgfile no exist")
+    if(os.path.exists(weight_model_file)):
+        print("weight_model_file exist")
+    else:
+        print("weight_model_file no exist")
+        
+        
+    net = cv2.dnn.readNetFromDarknet(cfg_file, weight_model_file)
     net.setPreferableBackend(cv2.dnn.DNN_BACKEND_OPENCV)
     net.setPreferableTarget(cv2.dnn.DNN_TARGET_CPU)
 
