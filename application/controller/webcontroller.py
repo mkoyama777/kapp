@@ -84,9 +84,9 @@ def upload(request,session,upload_dir,output_dir):
                     #     {executor.submit(yolo.analyze(get_filetype(filename),inputfilepath,outputfilepath)  ) }
                 print("call analyze")
                 outputfilename = changesuffix(filename)
-                # th = threading.Thread(target=yolo.analyze,args=[get_filetype(filename),inputfilepath,outputdir,outputfilename],name="app_newthread")
-                # th.start()
-                yolo.analyze(get_filetype(filename),inputfilepath,outputdir,outputfilename)
+                th = threading.Thread(target=yolo.analyze,args=[get_filetype(filename),inputfilepath,outputdir,outputfilename],name="app_newthread")
+                th.start()
+                # yolo.analyze(get_filetype(filename),inputfilepath,outputdir,outputfilename)
 
         return json.dumps({'code':200,'filenames':session["filenames"]})          
     return json.dumps({'code':200,'message':'no file'})      
