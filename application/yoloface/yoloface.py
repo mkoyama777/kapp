@@ -67,9 +67,11 @@ def analyze(filetype,finput,foutputdir,foutputname):
     else:
         print("weight_model_file no exist")
         
-        
+    print("load model")    
     net = cv2.dnn.readNetFromDarknet(cfg_file, weight_model_file)
+    print("set backend")
     net.setPreferableBackend(cv2.dnn.DNN_BACKEND_OPENCV)
+    print("preferable target")
     net.setPreferableTarget(cv2.dnn.DNN_TARGET_CPU)
 
     # wind_name = 'face detection using YOLOv3'
