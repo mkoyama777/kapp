@@ -99,15 +99,16 @@ def analyze(filetype,finput,foutputdir,foutputname):
 
     # Get the video writer initialized to save the output video
     video_writer = None
+    print("video writer")
     if filetype=="movie":
         video_writer = cv2.VideoWriter(output_file,
                                        cv2.VideoWriter_fourcc('M', 'J', 'P', 'G'),
                                        cap.get(cv2.CAP_PROP_FPS), (
                                            round(cap.get(cv2.CAP_PROP_FRAME_WIDTH)),
                                            round(cap.get(cv2.CAP_PROP_FRAME_HEIGHT))))
-
+    print("while start")
     while True:
-
+        print("cap read")
         has_frame, frame = cap.read()
 
         # Stop the program if reached end of video
