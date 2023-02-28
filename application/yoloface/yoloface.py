@@ -145,8 +145,10 @@ def analyze(filetype,finput,foutputdir,foutputname):
 
         # Save the output video to file
         if filetype=="image":
+            print("cv2 image write")
             cv2.imwrite(output_file, frame.astype(np.uint8))
         else:
+            print("cv2 video write")
             video_writer.write(frame.astype(np.uint8))
 
         #cv2.imshow(wind_name, frame)
@@ -155,8 +157,9 @@ def analyze(filetype,finput,foutputdir,foutputname):
         if key == 27 or key == ord('q'):
             print('[i] ==> Interrupted by user!')
             break
-
+    print("cap release")
     cap.release()
+    print("destroy all windows")
     cv2.destroyAllWindows()
     if(not video_writer == None):
         video_writer.release()
