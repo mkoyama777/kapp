@@ -35,8 +35,8 @@ def reset():
         shutil.rmtree(new_dir_path)
     if(os.path.exists(new_output_path)):    
         shutil.rmtree(new_output_path)
-    os.mkdir(new_dir_path)        
-    os.mkdir(new_output_path)
+    os.makedirs(new_dir_path)        
+    os.makedirs(new_output_path)
     print(abspath(new_dir_path))
     print(abspath(new_output_path))
     session["filenames"] = {}            
