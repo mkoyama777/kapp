@@ -56,8 +56,8 @@ print('----- info -----')
 
 def analyze(filetype,finput,foutputdir,foutputname):
     print("--------tracking start ")
-    cfg_file = './yoloface/cfg/yolov3-face.cfg'
-    weight_model_file = './yoloface/model-weights/yolov3-wider_16000.weights'
+    cfg_file = '/opt/render/project/src/application/yoloface/model-weights/cfg/yolov3-face.cfg'
+    weight_model_file = '/opt/render/project/src/application/yoloface/model-weights/yolov3-wider_16000.weights'
     if(os.path.exists(cfg_file)):
         print("cfgfile exist")
     else:
