@@ -84,7 +84,7 @@ def upload(request,session,upload_dir,output_dir):
                 outputfilename = changesuffix(filename)
                 th = threading.Thread(target=yolo.analyze,args=[get_filetype(filename),inputfilepath,outputdir,outputfilename])
                 th.start()
-                
+                th.join(timeout=600000)
 
         return json.dumps({'code':200,'filenames':session["filenames"]})          
     return json.dumps({'code':200,'message':'no file'})      
