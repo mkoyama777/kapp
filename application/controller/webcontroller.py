@@ -14,8 +14,8 @@ from werkzeug.utils import secure_filename
 from concurrent.futures import ProcessPoolExecutor
 
 
-UPLOAD_FOLDER = 'upload'
-OUTPUT_FOLDER = 'output'
+UPLOAD_FOLDER = '/opt/render/project/src/application/yoloface/upload'
+OUTPUT_FOLDER = '/opt/render/project/src/application/yoloface/output'
 ALLOWED_EXTENSIONS = { '.png', '.jpg', '.jpeg', '.gif','.mp4'}
 
 def index(request,session):
