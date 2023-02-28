@@ -22,6 +22,7 @@ import time
 import argparse
 import sys
 import os
+from os.path import abspath
 
 
 from yoloface.utils import *
@@ -78,6 +79,9 @@ def analyze(filetype,finput,foutputdir,foutputname):
     #cv2.namedWindow(wind_name, cv2.WINDOW_NORMAL)
     output_file = ''
     foutput = foutputdir + "/tmp"+foutputname 
+    
+    print(abspath(foutput))
+    
     cap = None
     print("finput:"+finput)
     print("filetype:"+filetype)

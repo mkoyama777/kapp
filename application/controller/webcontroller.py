@@ -12,10 +12,10 @@ from pathlib import Path
 from datetime import timedelta 
 from werkzeug.utils import secure_filename
 from concurrent.futures import ProcessPoolExecutor
+from os.path import abspath
 
-
-UPLOAD_FOLDER = '/opt/render/project/src/application/yoloface/upload'
-OUTPUT_FOLDER = '/opt/render/project/src/application/yoloface/output'
+UPLOAD_FOLDER = 'upload'
+OUTPUT_FOLDER = 'output'
 ALLOWED_EXTENSIONS = { '.png', '.jpg', '.jpeg', '.gif','.mp4'}
 
 def index(request,session):
@@ -37,6 +37,8 @@ def reset():
         shutil.rmtree(new_output_path)
     os.mkdir(new_dir_path)        
     os.mkdir(new_output_path)
+    print(abspath(new_dir_path))
+    print(abspath(new_output_path))
     session["filenames"] = {}            
 
 def check(request,session,upload_dir,output_dir):
