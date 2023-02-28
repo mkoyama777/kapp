@@ -117,17 +117,18 @@ def analyze(filetype,finput,foutputdir,foutputname):
             print('[i] ==> Output file is stored at', output_file)
             cv2.waitKey(1000)
             break
-
+        print("blobFromImage")
         # Create a 4D blob from a frame.
         blob = cv2.dnn.blobFromImage(frame, 1 / 255, (IMG_WIDTH, IMG_HEIGHT),
                                      [0, 0, 0], 1, crop=False)
 
+        print("setInput")
         # Sets the input to the network
         net.setInput(blob)
-
+        print("forward")
         # Runs the forward pass to get output of the output layers
         outs = net.forward(get_outputs_names(net))
-
+        print("postProcess")
         # Remove the bounding boxes with low confidence
         faces = post_process(frame, outs, CONF_THRESHOLD, NMS_THRESHOLD)
         print('[i] ==> # detected faces: {}'.format(len(faces)))
