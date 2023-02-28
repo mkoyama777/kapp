@@ -131,7 +131,12 @@ def analyze(filetype,finput,foutputdir,foutputname):
         net.setInput(blob)
         print("forward")
         # Runs the forward pass to get output of the output layers
-        outs = net.forward(get_outputs_names(net))
+        try:
+            outs = net.forward(get_outputs_names(net))
+        except:
+            import traceback
+            traceback.print_exc()
+
         print("postProcess")
         # Remove the bounding boxes with low confidence
         faces = post_process(frame, outs, CONF_THRESHOLD, NMS_THRESHOLD)
