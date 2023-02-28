@@ -14,8 +14,10 @@ from werkzeug.utils import secure_filename
 from concurrent.futures import ProcessPoolExecutor
 from os.path import abspath
 
-UPLOAD_FOLDER = 'upload'
-OUTPUT_FOLDER = 'output'
+UPLOAD_FOLDER = '/opt/render/project/src/application/upload'
+OUTPUT_FOLDER = '/opt/render/project/src/application/output'
+# UPLOAD_FOLDER = 'upload'
+# OUTPUT_FOLDER = 'output'
 ALLOWED_EXTENSIONS = { '.png', '.jpg', '.jpeg', '.gif','.mp4'}
 
 def index(request,session):
