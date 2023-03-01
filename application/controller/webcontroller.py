@@ -32,11 +32,17 @@ def reset():
     new_dir_path = UPLOAD_FOLDER+"/"+key
     new_output_path = OUTPUT_FOLDER+"/"+key
     if(os.path.exists(new_dir_path)): 
-        shutil.rmtree(new_dir_path)
+        #shutil.rmtree(new_dir_path)
+        print("new dir exist")
+    else:
+        os.mkdir(new_dir_path)
     if(os.path.exists(new_output_path)):    
-        shutil.rmtree(new_output_path)
-    os.mkdir(new_dir_path)        
-    os.mkdir(new_output_path)
+        #shutil.rmtree(new_output_path)
+        print("new outputdir exist")
+    else:
+        os.mkdir(new_output_path)    
+    #os.mkdir(new_dir_path)        
+    #os.mkdir(new_output_path)
     session["filenames"] = {}            
 
 def check(request,session,upload_dir,output_dir):
