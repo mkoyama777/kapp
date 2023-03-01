@@ -1,3 +1,3 @@
 git add .
 git commit -m "dummy"
-git push origin xserver
+git push origin local
