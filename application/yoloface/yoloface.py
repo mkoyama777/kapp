@@ -56,7 +56,18 @@ print('----- info -----')
 
 def analyze(filetype,finput,foutputdir,foutputname):
     print("--------tracking start")
-    net = cv2.dnn.readNetFromDarknet('./yoloface/cfg/yolov3-face.cfg', './yoloface/model-weights/yolov3-wider_16000.weights')
+    cfg_filepath = './yoloface/cfg/yolov3-face.cfg'
+    weights_filepath = './yoloface/model-weights/yolov3-wider_16000.weights'
+    if(os.path.exists(cfg_filepath)):
+        print ("cfg exist")
+    else:
+        print ("cfg no exist!!!")
+    if(os.path.exists(weights_filepath)):
+        print ("weights exist")
+    else:
+        print ("weights no exist!!!")
+        
+    net = cv2.dnn.readNetFromDarknet(cfg_filepath, weights_filepath)
     net.setPreferableBackend(cv2.dnn.DNN_BACKEND_OPENCV)
     net.setPreferableTarget(cv2.dnn.DNN_TARGET_CPU)
 
@@ -104,16 +115,20 @@ def analyze(filetype,finput,foutputdir,foutputname):
             break
 
         # Create a 4D blob from a frame.
+        print("blobFromImage")
         blob = cv2.dnn.blobFromImage(frame, 1 / 255, (IMG_WIDTH, IMG_HEIGHT),
                                      [0, 0, 0], 1, crop=False)
 
         # Sets the input to the network
+        print("setInput")
         net.setInput(blob)
 
         # Runs the forward pass to get output of the output layers
+        print("forward")
         outs = net.forward(get_outputs_names(net))
 
         # Remove the bounding boxes with low confidence
+        print("post_process")
         faces = post_process(frame, outs, CONF_THRESHOLD, NMS_THRESHOLD)
         print('[i] ==> # detected faces: {}'.format(len(faces)))
         print('#' * 60)
@@ -121,7 +136,7 @@ def analyze(filetype,finput,foutputdir,foutputname):
         info = [
             ('number of faces detected', '{}'.format(len(faces)))
         ]
-
+        print("puttext")
         for (i, (txt, val)) in enumerate(info):
             text = '{}: {}'.format(txt, val)
             cv2.putText(frame, text, (10, (i * 20) + 20),
@@ -129,8 +144,10 @@ def analyze(filetype,finput,foutputdir,foutputname):
 
         # Save the output video to file
         if filetype=="image":
+            print("imwrite")
             cv2.imwrite(output_file, frame.astype(np.uint8))
         else:
+            print("video write")
             video_writer.write(frame.astype(np.uint8))
 
         #cv2.imshow(wind_name, frame)
@@ -139,13 +156,14 @@ def analyze(filetype,finput,foutputdir,foutputname):
         if key == 27 or key == ord('q'):
             print('[i] ==> Interrupted by user!')
             break
-
+    print("cap release")
     cap.release()
     cv2.destroyAllWindows()
     if(not video_writer == None):
         video_writer.release()
     foutput = foutputdir + "/tmp"+foutputname
     time.sleep(1)
+    print("file rename")
     os.rename(foutput,foutputdir + "/"+foutputname) 
     print('==> All done!')
     print('***********************************************************')

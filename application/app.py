@@ -5,6 +5,7 @@ import random
 import uuid
 import shutil
 import subprocess
+
 from flask import *
 from pathlib import Path
 from datetime import timedelta 
@@ -14,6 +15,8 @@ import controller.webcontroller as webctl
 
 UPLOAD_FOLDER = 'upload'
 OUTPUT_FOLDER = 'output'
+UPLOAD_FOLDER = os.path.abspath(UPLOAD_FOLDER)
+OUTPUT_FOLDER = os.path.abspath(OUTPUT_FOLDER)
 ALLOWED_EXTENSIONS = { '.png', '.jpg', '.jpeg', '.gif','.mp4'}
 
 app = Flask(__name__)
@@ -23,10 +26,10 @@ app.permanent_session_lifetime = timedelta(minutes=300)
 
 if(os.path.exists(UPLOAD_FOLDER)):
     shutil.rmtree(UPLOAD_FOLDER)
-    os.mkdir(UPLOAD_FOLDER)
+    os.makedirs(UPLOAD_FOLDER)
 if(os.path.exists(OUTPUT_FOLDER)):    
     shutil.rmtree(OUTPUT_FOLDER)
-    os.mkdir(OUTPUT_FOLDER)
+    os.makedirs(OUTPUT_FOLDER)
 
 @app.route('/')
 def index():

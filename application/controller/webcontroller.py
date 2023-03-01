@@ -6,7 +6,7 @@ import uuid
 import shutil
 import yoloface.yoloface as yolo
 import threading
-
+import glob
 from flask import *
 from pathlib import Path
 from datetime import timedelta 
@@ -16,6 +16,9 @@ from concurrent.futures import ProcessPoolExecutor
 
 UPLOAD_FOLDER = 'upload'
 OUTPUT_FOLDER = 'output'
+UPLOAD_FOLDER = os.path.abspath(UPLOAD_FOLDER)
+OUTPUT_FOLDER = os.path.abspath(OUTPUT_FOLDER)
+
 ALLOWED_EXTENSIONS = { '.png', '.jpg', '.jpeg', '.gif','.mp4'}
 
 def index(request,session):
@@ -24,31 +27,44 @@ def index(request,session):
     return render_template('index.html')
 def reset():
     if "uuid" in session:
+        print("uuid session exist")
         key = session['uuid'] 
     else:
+        print("make new uuid")
         key = str(uuid.uuid1())
         session['uuid'] = key
 
     new_dir_path = UPLOAD_FOLDER+"/"+key
     new_output_path = OUTPUT_FOLDER+"/"+key
     if(os.path.exists(new_dir_path)): 
-        shutil.rmtree(new_dir_path)
+        # shutil.rmtree(new_dir_path)
+        print("input dir exits")
+    else:
+        os.makedirs(new_dir_path)        
     if(os.path.exists(new_output_path)):    
-        shutil.rmtree(new_output_path)
-    os.mkdir(new_dir_path)        
-    os.mkdir(new_output_path)
+        # shutil.rmtree(new_output_path)
+        print("output dir exits")
+    else:
+        os.makedirs(new_output_path)    
+    # os.makedirs(new_dir_path)        
+    # os.makedirs(new_output_path)
     session["filenames"] = {}            
 
 def check(request,session,upload_dir,output_dir):
     arr = session["filenames"]
     key = session["uuid"]
-    inputdir = upload_dir+"/"+key
-    outputdir = output_dir+"/"+key
-
-    for filename in arr:
-        outputfilename = changesuffix(filename)
-        if(os.path.exists(outputdir+"/"+outputfilename)):
-            arr[filename] = outputfilename
+    inputdir = upload_dir+os.sep+key
+    outputdir = output_dir+os.sep+key
+    inputfiles = glob.glob(inputdir+os.sep+"*")
+    # print(inputfiles)
+    for inputfile in inputfiles:
+        # print("file")
+        if(os.path.isfile(inputfile)):
+            inputfile = os.path.basename(inputfile)
+            arr[inputfile] = False
+            outputfilename = changesuffix(inputfile)
+            if(os.path.exists(outputdir+"/"+outputfilename) ):
+                arr[inputfile] = outputfilename
     session["filenames"] = arr
     return json.dumps({'code':200,'filenames':session["filenames"]})
 
@@ -69,7 +85,7 @@ def upload(request,session,upload_dir,output_dir):
         file.save(os.path.join(inputdir, filename))
         inputfilepath = os.path.join(inputdir, filename)
         outputfilepath = os.path.join(outputdir, outputfilename)
-        if(not os.path.exists(outputdir+"/"+outputfilename)):
+        if(not os.path.exists(outputdir+os.sep+outputfilename)):
             #Tracking
             if (not procflg):
                 #処理中ではないので、解析を実行

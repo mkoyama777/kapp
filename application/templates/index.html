@@ -78,8 +78,9 @@
         crossorigin="anonymous"></script>
         <script src="https://cdn.jsdelivr.net/npm/admin-lte@3.2/dist/js/adminlte.min.js"></script>
         <script>
+            check();
             $('#resultTbl').hide();
-            setInterval(check,3000);
+            setInterval(check,10000);
             $('#inputFile').change(function(){
                 let name =$(this).prop('files')[0].name;
                 $(".custom-file-label").text(name);
