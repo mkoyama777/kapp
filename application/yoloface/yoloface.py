@@ -135,6 +135,7 @@ def analyze(filetype,finput,foutputdir,foutputname):
             outs = net.forward(get_outputs_names(net))
         except:
             import traceback
+            print("---------138 error")
             traceback.print_exc()
 
         print("postProcess")
