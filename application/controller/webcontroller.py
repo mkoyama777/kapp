@@ -59,7 +59,7 @@ def reset(request):
 def check(request,session,upload_dir,output_dir):
     arr = {}
     uuiddata = request.cookies.get('_kapp_uuid', None)
-    print(uuiddata)
+    # print(uuiddata)
     inputdir = upload_dir+os.sep+uuiddata
     outputdir = output_dir+os.sep+uuiddata
     inputfiles = glob.glob(inputdir+os.sep+"*")
