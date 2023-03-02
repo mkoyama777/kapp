@@ -16,8 +16,8 @@ from concurrent.futures import ProcessPoolExecutor
 
 UPLOAD_FOLDER = 'upload'
 OUTPUT_FOLDER = 'output'
-UPLOAD_FOLDER = os.path.abspath(UPLOAD_FOLDER)
-OUTPUT_FOLDER = os.path.abspath(OUTPUT_FOLDER)
+# UPLOAD_FOLDER = os.path.abspath(UPLOAD_FOLDER)
+# OUTPUT_FOLDER = os.path.abspath(OUTPUT_FOLDER)
 
 ALLOWED_EXTENSIONS = { '.png', '.jpg', '.jpeg', '.gif','.mp4'}
 
@@ -33,7 +33,7 @@ def index(request,session):
     return response
 
 def reset(request):
-    uuiddata = request.cookies.get('_kapp_uuid', None)
+    uuiddata = get_uuid(request)
     if uuiddata is None:
         print("make new uuid")
         uuiddata = str(uuid.uuid1())
@@ -56,12 +56,12 @@ def reset(request):
     # os.makedirs(new_output_path)
     return uuiddata            
 
-def check(request,session,upload_dir,output_dir):
+def check(request,session):
     arr = {}
-    uuiddata = request.cookies.get('_kapp_uuid', None)
+    uuiddata = get_uuid(request)
     # print(uuiddata)
-    inputdir = upload_dir+os.sep+uuiddata
-    outputdir = output_dir+os.sep+uuiddata
+    inputdir = get_uploaddir(request)
+    outputdir = get_outputdir(request)
     inputfiles = glob.glob(inputdir+os.sep+"*")
     # print(inputfiles)
     if uuiddata is None:
@@ -83,15 +83,15 @@ def upload(request,session,upload_dir,output_dir):
     trackingtype = request.form['trackingtype']
     file = request.files['upfile']
     # key = session['uuid']
-    key = request.cookies.get('_kapp_uuid', None)
+    key = get_uuid(request)
     if file and allowed_file(file.filename):
         filename = secure_filename(file.filename)
         arr = session["filenames"]
         procflg = filename in arr
         arr[filename] = False
         #ファイル保存
-        inputdir = upload_dir+"/"+key
-        outputdir = output_dir+"/"+key
+        inputdir = upload_dir + os.sep + key
+        outputdir = output_dir + os.sep + key
         outputfilename = changesuffix(filename)
         file.save(os.path.join(inputdir, filename))
         inputfilepath = os.path.join(inputdir, filename)
@@ -117,29 +117,28 @@ async def analyze(filename,inputpath,outputpath):
 
 def delfile(request,session ):
     fname = request.form['fname']
-    print("delfile:"+fname)
     arr = session["filenames"]
     arr.pop(fname)
     session["filenames"] = arr
-    for fname in session["filenames"]:
-        print(fname)
+    upload_dir = get_uploaddir(request)
+    output_dir = get_outputdir(request)
+
     return json.dumps({'code':200,'filenames':session["filenames"]})          
 
 def download(request,session,upload_dir,output_dir):
   print("---download start")
   fname = request.args.get('outputfname')
-  dirname = output_dir
+  dirname = get_outputdir(request)
   if(fname == None):
     fname = request.args.get('inputfname')
-    dirname = upload_dir
-  key = request.cookies.get('_kapp_uuid', None)
-  dirname = dirname +"/"+key
+    dirname = get_uploaddir(request)
+
   print(dirname)
-  print(dirname+"/"+fname)
+  print(dirname+ os.sep +fname)
   return send_from_directory(
         directory=dirname,
         filename=fname,
-        path=dirname+"/"+fname,
+        path=dirname+ os.sep +fname,
         as_attachment=True,
         attachment_filename=fname)      
 
@@ -163,4 +162,15 @@ def get_filetype(filename):
         return "image"
     if (suffix == '.mp4'):
         return "movie"
+    
+def get_uuid(request):
+        return request.cookies.get('_kapp_uuid', None)
+
+def get_uploaddir(request):    
+    key = get_uuid(request)
+    return os.path.abspath(UPLOAD_FOLDER + os.sep + key)
+
+def get_outputdir(request):    
+    key = get_uuid(request)
+    return os.path.abspath(OUTPUT_FOLDER + os.sep + key)
     

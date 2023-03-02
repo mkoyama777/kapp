@@ -34,11 +34,11 @@ def index():
 
 @app.route('/upload',methods=["POST"])
 def upload():
-    return webctl.upload(request,session,UPLOAD_FOLDER,OUTPUT_FOLDER)
+    return webctl.upload(request,session)
 
 @app.route('/check',methods=["POST"])
 def check():
-    return webctl.check(request,session,UPLOAD_FOLDER,OUTPUT_FOLDER)
+    return webctl.check(request,session)
 
 @app.route('/delfile',methods=["POST"])
 def delfile():
@@ -46,7 +46,7 @@ def delfile():
 
 @app.route("/download",methods=["GET"])
 def download():
-    return webctl.download(request,session,UPLOAD_FOLDER,OUTPUT_FOLDER)
+    return webctl.download(request,session)
 
 @app.route("/init",methods=["GET"])
 def init():
