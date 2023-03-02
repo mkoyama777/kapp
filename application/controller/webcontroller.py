@@ -127,7 +127,7 @@ def delfile(request,session ):
     
     return json.dumps({'code':200,'filenames':session["filenames"]})          
 
-def download(request,session,upload_dir,output_dir):
+def download(request,session):
   print("---download start")
   fname = request.args.get('outputfname')
   dirname = get_outputdir(request)
