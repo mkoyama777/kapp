@@ -79,7 +79,7 @@ def check(request,session):
     return json.dumps({'code':200,'filenames':session["filenames"]})
 
 
-def upload(request,session,upload_dir,output_dir):
+def upload(request,session):
     trackingtype = request.form['trackingtype']
     file = request.files['upfile']
     # key = session['uuid']
@@ -90,13 +90,13 @@ def upload(request,session,upload_dir,output_dir):
         procflg = filename in arr
         arr[filename] = False
         #ファイル保存
-        inputdir = upload_dir + os.sep + key
-        outputdir = output_dir + os.sep + key
+        inputdir = get_uploaddir(request)
+        outputdir = get_outputdir(request)
         outputfilename = changesuffix(filename)
         file.save(os.path.join(inputdir, filename))
         inputfilepath = os.path.join(inputdir, filename)
         outputfilepath = os.path.join(outputdir, outputfilename)
-        if(not os.path.exists(outputdir+os.sep+outputfilename)):
+        if(not os.path.exists(outputfilepath)):
             #Tracking
             if (not procflg):
                 #処理中ではないので、解析を実行
@@ -120,9 +120,11 @@ def delfile(request,session ):
     arr = session["filenames"]
     arr.pop(fname)
     session["filenames"] = arr
-    upload_dir = get_uploaddir(request)
-    output_dir = get_outputdir(request)
-
+    upload_fname = get_uploaddir(request) + os.sep + fname
+    output_fname = get_outputdir(request) + os.sep + fname
+    os.remove(upload_fname)
+    os.remove(output_fname)
+    
     return json.dumps({'code':200,'filenames':session["filenames"]})          
 
 def download(request,session,upload_dir,output_dir):
