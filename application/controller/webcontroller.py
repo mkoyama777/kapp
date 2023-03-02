@@ -7,9 +7,9 @@ import shutil
 import yoloface.yoloface as yolo
 import threading
 import glob
+from datetime import *
 from flask import *
 from pathlib import Path
-from datetime import timedelta 
 from werkzeug.utils import secure_filename
 from concurrent.futures import ProcessPoolExecutor
 
@@ -23,19 +23,25 @@ ALLOWED_EXTENSIONS = { '.png', '.jpg', '.jpeg', '.gif','.mp4'}
 
 def index(request,session):
     session.permanent = True
-    reset()
-    return render_template('index.html')
-def reset():
-    if "uuid" in session:
-        print("uuid session exist")
-        key = session['uuid'] 
-    else:
-        print("make new uuid")
-        key = str(uuid.uuid1())
-        session['uuid'] = key
+    uuiddata = reset(request)
+    print("---make index uuiddata")
+    print(uuiddata)
+    response = make_response(render_template('index.html'))
+    max_age = 60 * 60 * 24 * 120 # 120 days
+    expires = int(datetime.now().timestamp()) + max_age
+    response.set_cookie('_kapp_uuid', value=uuiddata, expires=expires)
+    return response
 
-    new_dir_path = UPLOAD_FOLDER+"/"+key
-    new_output_path = OUTPUT_FOLDER+"/"+key
+def reset(request):
+    uuiddata = request.cookies.get('_kapp_uuid', None)
+    if uuiddata is None:
+        print("make new uuid")
+        uuiddata = str(uuid.uuid1())
+    else:   
+        print("uuid session exist")
+
+    new_dir_path = UPLOAD_FOLDER+"/"+uuiddata
+    new_output_path = OUTPUT_FOLDER+"/"+uuiddata
     if(os.path.exists(new_dir_path)): 
         # shutil.rmtree(new_dir_path)
         print("input dir exits")
@@ -48,31 +54,36 @@ def reset():
         os.makedirs(new_output_path)    
     # os.makedirs(new_dir_path)        
     # os.makedirs(new_output_path)
-    session["filenames"] = {}            
+    return uuiddata            
 
 def check(request,session,upload_dir,output_dir):
-    arr = session["filenames"]
-    key = session["uuid"]
-    inputdir = upload_dir+os.sep+key
-    outputdir = output_dir+os.sep+key
+    arr = {}
+    uuiddata = request.cookies.get('_kapp_uuid', None)
+    print(uuiddata)
+    inputdir = upload_dir+os.sep+uuiddata
+    outputdir = output_dir+os.sep+uuiddata
     inputfiles = glob.glob(inputdir+os.sep+"*")
     # print(inputfiles)
-    for inputfile in inputfiles:
-        # print("file")
-        if(os.path.isfile(inputfile)):
-            inputfile = os.path.basename(inputfile)
-            arr[inputfile] = False
-            outputfilename = changesuffix(inputfile)
-            if(os.path.exists(outputdir+"/"+outputfilename) ):
-                arr[inputfile] = outputfilename
-    session["filenames"] = arr
+    if uuiddata is None:
+        print("uuiddata is none")
+    else:
+        for inputfile in inputfiles:
+            # print("file")
+            if(os.path.isfile(inputfile)):
+                inputfile = os.path.basename(inputfile)
+                arr[inputfile] = False
+                outputfilename = changesuffix(inputfile)
+                if(os.path.exists(outputdir+"/"+outputfilename) ):
+                    arr[inputfile] = outputfilename
+        session["filenames"] = arr
     return json.dumps({'code':200,'filenames':session["filenames"]})
 
 
 def upload(request,session,upload_dir,output_dir):
     trackingtype = request.form['trackingtype']
     file = request.files['upfile']
-    key = session['uuid']
+    # key = session['uuid']
+    key = request.cookies.get('_kapp_uuid', None)
     if file and allowed_file(file.filename):
         filename = secure_filename(file.filename)
         arr = session["filenames"]
@@ -121,7 +132,7 @@ def download(request,session,upload_dir,output_dir):
   if(fname == None):
     fname = request.args.get('inputfname')
     dirname = upload_dir
-  key = session['uuid']
+  key = request.cookies.get('_kapp_uuid', None)
   dirname = dirname +"/"+key
   print(dirname)
   print(dirname+"/"+fname)
