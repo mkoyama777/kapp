@@ -1,0 +1,14 @@
+[Unit]
+Description = uWSGI
+After = syslog.target
+
+[Service]
+ExecStart = /usr/bin/bash -c "uwsgi --ini /var/www/html/kapp/application/app.ini"
+Restart=always
+KillSignal=SIGQUIT
+Type=notify
+StandardError=syslog
+NotifyAccess=all
+
+[Install]
+WantedBy=multi-user.target
