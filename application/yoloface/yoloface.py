@@ -131,8 +131,11 @@ def analyze(filetype,finput,foutputdir,foutputname):
             text = '{}: {}'.format(txt, val)
 
             #TODO 23.3.5
-            #顔を切り出し、予測をかける
+            # 顔を切り出し、予測をかける
             # 取得したラベルをtext偽っとする    
+                
+
+
 
             cv2.putText(frame, text, (10, (i * 20) + 20),
                         cv2.FONT_HERSHEY_SIMPLEX, 0.7, COLOR_RED, 2)
