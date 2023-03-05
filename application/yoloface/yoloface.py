@@ -22,6 +22,8 @@ import time
 import argparse
 import sys
 import os
+from yoloface.sexmodel.sexnet import *
+
 
 
 from yoloface.utils import *
@@ -116,6 +118,9 @@ def analyze(filetype,finput,foutputdir,foutputname):
         # Remove the bounding boxes with low confidence
         faces = post_process(frame, outs, CONF_THRESHOLD, NMS_THRESHOLD)
         print('[i] ==> # detected faces: {}'.format(len(faces)))
+        print(type(faces))
+        print(type(faces[0]))
+
         print('#' * 60)
         # initialize the set of information we'll displaying on the frame
         info = [
@@ -124,8 +129,14 @@ def analyze(filetype,finput,foutputdir,foutputname):
 
         for (i, (txt, val)) in enumerate(info):
             text = '{}: {}'.format(txt, val)
+
+            #TODO 23.3.5
+            #顔を切り出し、予測をかける
+            # 取得したラベルをtext偽っとする    
+
             cv2.putText(frame, text, (10, (i * 20) + 20),
                         cv2.FONT_HERSHEY_SIMPLEX, 0.7, COLOR_RED, 2)
+        
 
         # Save the output video to file
         if filetype=="image":
