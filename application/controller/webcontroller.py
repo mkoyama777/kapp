@@ -80,10 +80,11 @@ def check(request,session):
 
 
 def upload(request,session):
+    
     trackingtype = request.form['trackingtype']
     file = request.files['upfile']
-    # key = session['uuid']
-    key = get_uuid(request)
+
+    
     if file and allowed_file(file.filename):
         filename = secure_filename(file.filename)
         arr = session["filenames"]
@@ -137,6 +138,7 @@ def download(request,session):
 
   print(dirname)
   print(dirname+ os.sep +fname)
+  print("---------download")
   return send_from_directory(
         directory=dirname,
         filename=fname,

@@ -9,11 +9,10 @@ import torch.nn as nn
 import torch.nn.functional as F
 import torchvision
 import torchmetrics
-import torchsummary
+
 import pytorch_lightning as pl
 
 from torchmetrics.functional import accuracy
-from torchsummary import summary
 from pytorch_lightning.loggers import CSVLogger
 from pytorch_lightning.callbacks import ModelCheckpoint
 from PIL import Image

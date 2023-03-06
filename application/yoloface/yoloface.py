@@ -132,7 +132,10 @@ def analyze(filetype,finput,foutputdir,foutputname):
 
             #TODO 23.3.5
             # 顔を切り出し、予測をかける
-            # 取得したラベルをtext偽っとする    
+            # 取得したラベルをtextにセットする。
+            print("----------------------------")
+            print(txt+":"+val)
+            
                 
 
 

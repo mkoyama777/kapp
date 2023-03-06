@@ -53,7 +53,8 @@ def draw_predict(frame, conf, left, top, right, bottom):
     # Draw a bounding box.
     cv2.rectangle(frame, (left, top), (right, bottom), COLOR_YELLOW, 2)
 
-    text = '{:.2f}'.format(conf)
+    # text = '{:.2f}'.format(conf)
+    text = '{:.20s}'.format(conf)
 
     # Display the label at the top of the bounding box
     label_size, base_line = cv2.getTextSize(text, cv2.FONT_HERSHEY_SIMPLEX, 0.5, 1)
@@ -104,7 +105,7 @@ def post_process(frame, outs, conf_threshold, nms_threshold):
         left, top, right, bottom = refined_box(left, top, width, height)
         # draw_predict(frame, confidences[i], left, top, left + width,
         #              top + height)
-        draw_predict(frame, confidences[i], left, top, right, bottom)
+        draw_predict(frame, "abcde:"+str(confidences[i]), left, top, right, bottom)
     return final_boxes
 
 
