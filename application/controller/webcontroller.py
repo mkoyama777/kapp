@@ -137,10 +137,14 @@ def download(request,session):
 
   print(dirname)
   print(dirname+ os.sep +fname)
+  if(os.path.exists(dirname+ os.sep +fname)): 
+      print("download file exist")
+  else:
+      print("download file nonono exist")
   return send_from_directory(
-        directory=dirname,
-        filename=fname,
-        path=dirname+ os.sep +fname,
+        directory=secure_filename(dirname),
+        filename=secure_filename(fname),
+        path=secure_filename(dirname+ os.sep +fname),
         as_attachment=True,
         attachment_filename=fname)      
 
