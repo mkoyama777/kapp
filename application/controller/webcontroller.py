@@ -125,6 +125,7 @@ def download(request,session,upload_dir,output_dir):
   dirname = dirname +"/"+key
   print(dirname)
   print(dirname+"/"+fname)
+  print(os.path.exists(dirname+"/"+fname))
   return send_from_directory(
         directory=dirname,
         filename=fname,
