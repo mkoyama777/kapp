@@ -60,8 +60,8 @@ def check(request,session):
     arr = {}
     uuiddata = get_uuid(request)
     # print(uuiddata)
-    inputdir = get_uploaddir(request)
-    outputdir = get_outputdir(request)
+    inputdir = get_abs_uploaddir(request)
+    outputdir = get_abs_outputdir(request)
     inputfiles = glob.glob(inputdir+os.sep+"*")
     # print(inputfiles)
     if uuiddata is None:
@@ -91,8 +91,8 @@ def upload(request,session):
         procflg = filename in arr
         arr[filename] = False
         #ファイル保存
-        inputdir = get_uploaddir(request)
-        outputdir = get_outputdir(request)
+        inputdir = get_abs_uploaddir(request)
+        outputdir = get_abs_outputdir(request)
         outputfilename = changesuffix(filename)
         file.save(os.path.join(inputdir, filename))
         inputfilepath = os.path.join(inputdir, filename)
@@ -121,8 +121,8 @@ def delfile(request,session ):
     arr = session["filenames"]
     arr.pop(fname)
     session["filenames"] = arr
-    upload_fname = get_uploaddir(request) + os.sep + fname
-    output_fname = get_outputdir(request) + os.sep + fname
+    upload_fname = get_abs_uploaddir(request) + os.sep + fname
+    output_fname = get_abs_outputdir(request) + os.sep + fname
     os.remove(upload_fname)
     os.remove(output_fname)
     
@@ -139,12 +139,26 @@ def download(request,session):
   print(dirname)
   print(dirname+ os.sep +fname)
   print("---------download")
+  abs_dirname = get_abs_outputdir(request)
+#   return send_file(
+#       dirname,
+#       fname,
+#       as_attachment=True,
+#   )
+        # directory=dirname,
+        # filename=fname,
+        # path=dirname+ os.sep +fname,
+        # as_attachment=True,
+        # attachment_filename=fname)      
   return send_from_directory(
-        directory=dirname,
-        filename=fname,
-        path=dirname+ os.sep +fname,
-        as_attachment=True,
-        attachment_filename=fname)      
+        dirname,
+        fname,
+        as_attachment=True)
+        # directory=dirname,
+        # filename=secure_filename(fname),
+        # path=abs_dirname + os.sep +fname,
+        # as_attachment=True)
+        # attachment_filename=fname)      
 
 def changesuffix(filename):
     suffix = pathlib.Path(filename).suffix
@@ -168,13 +182,19 @@ def get_filetype(filename):
         return "movie"
     
 def get_uuid(request):
-        return request.cookies.get('_kapp_uuid', None)
+    return request.cookies.get('_kapp_uuid', None)
+
+def get_abs_uploaddir(request):    
+    return os.path.abspath(get_uploaddir(request))
+
+def get_abs_outputdir(request):    
+    return os.path.abspath(get_outputdir(request))
 
 def get_uploaddir(request):    
     key = get_uuid(request)
-    return os.path.abspath(UPLOAD_FOLDER + os.sep + key)
+    return UPLOAD_FOLDER + os.sep + key
 
 def get_outputdir(request):    
     key = get_uuid(request)
-    return os.path.abspath(OUTPUT_FOLDER + os.sep + key)
+    return OUTPUT_FOLDER + os.sep + key
     

@@ -16,7 +16,8 @@
 import datetime
 import numpy as np
 import cv2
-
+import yoloface.sexmodel.sexnet as snet
+from PIL import Image
 # -------------------------------------------------------------------
 # Parameters
 # -------------------------------------------------------------------
@@ -61,7 +62,7 @@ def draw_predict(frame, conf, left, top, right, bottom):
 
     top = max(top, label_size[1])
     cv2.putText(frame, text, (left, top - 4), cv2.FONT_HERSHEY_SIMPLEX, 0.4,
-                COLOR_WHITE, 1)
+                COLOR_RED, 1)
 
 
 def post_process(frame, outs, conf_threshold, nms_threshold):
@@ -97,15 +98,46 @@ def post_process(frame, outs, conf_threshold, nms_threshold):
     for i in indices:
         # i = i[0]
         box = boxes[i]
-        left = box[0]
-        top = box[1]
-        width = box[2]
-        height = box[3]
+        # left = box[0] - int(box[0] * 0.5)
+        # top = box[1] - int(box[1] * 1.0)
+        # width = box[2] + int(box[2] * 0.5)
+        height = box[3] + int(box[3] * 1.0)
+        width  = box[2] + int(box[2] * 0.5)
+        height = box[3] + int (box[3] * 0.5)
+        left   = box[0] -int(width / 6)
+        top    = box[1] -int(height / 6)
+        # left   = box[0]
+        # top    = box[1]
+        # width  = box[2]
+        # height = box[3]
+        # if(left < 0 ):
+        #     left = 0
+        # if(top < 0 ):
+        #     top = 0
+        
+        # print(left)
+        # print(top)
+        # print(width)
+        # print(height)
         final_boxes.append(box)
+        
+        #顔の切り抜き 23.3.7 m.koyama
         left, top, right, bottom = refined_box(left, top, width, height)
+        dst = frame.astype(np.uint8)[top:top+height, left:left+width]
+        print("-----------dsttype")
+        print(type(dst))
+        sex = snet.predict(dst)
+        print(sex)
+        # cv2.imwrite('c:\work\outfile'+str(i)+'.jpg',dst)
         # draw_predict(frame, confidences[i], left, top, left + width,
         #              top + height)
-        draw_predict(frame, "abcde:"+str(confidences[i]), left, top, right, bottom)
+        # box = boxes[i]
+        # left   = box[0]
+        # top    = box[1]
+        # width  = box[2]
+        # height = box[3]
+        # left, top, right, bottom = refined_box(left, top, width, height)
+        draw_predict(frame, sex , left, top, right, bottom)
     return final_boxes
 
 

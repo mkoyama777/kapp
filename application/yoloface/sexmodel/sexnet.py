@@ -82,12 +82,14 @@ class Net(pl.LightningModule):
 
 
 def predict(img):
-    parent_dir = "model-weights"
+    parent_dir = "yoloface"+os.sep+"model-weights"+os.sep
+    parent_dir = os.path.abspath(parent_dir)
+    print("sexweight:"+parent_dir)
     net = Net().cpu().eval()
-    net.load_state_dict(torch.load(parent_dir+'sex.pt', map_location=torch.device('cpu')))
-
-    image = Image.open(img).convert("RGB")
-    image = transform(image)
+    net.load_state_dict(torch.load(parent_dir+os.sep+'sex.pt', map_location=torch.device('cpu')))
+    img = Image.fromarray(img)
+    # image = Image.open(img).convert("RGB")
+    image = transform(img)
     # 画像から配列に変換
     data = np.asarray(image)
     data = torch.tensor(data)
@@ -98,8 +100,10 @@ def predict(img):
     return get_label(data)
 
 def get_label(lbl):
-    if lbl == 0:
+    print("----------lbl")
+    print(lbl[0])
+    if lbl[0] == 0:
         return 'male'
-    if lbl == 1:
+    if lbl[0] == 1:
         return 'female'
     return 'other'
