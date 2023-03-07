@@ -137,16 +137,21 @@ def download(request,session):
 
   print(dirname)
   print(dirname+ os.sep +fname)
-  if(os.path.exists(dirname+ os.sep +fname)): 
+  filepath = dirname+ os.sep +fname
+  
+  if(os.path.exists(dirname)): 
+      print("download  exist")
+  if(os.path.exists(filepath)): 
       print("download file exist")
   else:
       print("download file nonono exist")
   return send_from_directory(
-        directory=secure_filename(dirname),
-        filename=secure_filename(fname),
-        path=secure_filename(dirname+ os.sep +fname),
+        directory=dirname,
+        filename=fname,
+        path=dirname,
         as_attachment=True,
-        attachment_filename=fname)      
+        attachment_filename=fname,
+        )     
 
 def changesuffix(filename):
     suffix = pathlib.Path(filename).suffix

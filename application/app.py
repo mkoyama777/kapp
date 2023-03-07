@@ -19,7 +19,7 @@ ALLOWED_EXTENSIONS = { '.png', '.jpg', '.jpeg', '.gif','.mp4'}
 app = Flask(__name__)
 app.secret_key = 'user'
 app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
-app.config['DOWNLOAD_FOLDER'] = os.path.join(app.root_path, 'downloads')
+# app.config['DOWNLOAD_FOLDER'] = os.path.join(app.root_path, 'downloads')
 app.permanent_session_lifetime = timedelta(minutes=300) 
 
 if(os.path.exists(UPLOAD_FOLDER)):
