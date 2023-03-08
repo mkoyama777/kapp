@@ -22,11 +22,12 @@ import time
 import argparse
 import sys
 import os
-from yoloface.sexmodel.sexnet import *
+import glob
+# from sexmodel.sexnet import *
 
 
 
-from yoloface.utils import *
+from utils import *
 
 #####################################################################
 #parser = argparse.ArgumentParser()
@@ -56,16 +57,17 @@ print('----- info -----')
 
 # check outputs directory
 
-def analyze(filetype,finput,foutputdir,foutputname):
+def _main(filetype,finput,foutputdir,foutputname):
     print("--------tracking start")
-    net = cv2.dnn.readNetFromDarknet('./yoloface/cfg/yolov3-face.cfg', './yoloface/model-weights/yolov3-wider_16000.weights')
+    # net = cv2.dnn.readNetFromDarknet('./yoloface/cfg/yolov3-face.cfg', './yoloface/model-weights/yolov3-wider_16000.weights')
+    net = cv2.dnn.readNetFromDarknet('./cfg/yolov3-face.cfg', './model-weights/yolov3-wider_16000.weights')
     net.setPreferableBackend(cv2.dnn.DNN_BACKEND_OPENCV)
     net.setPreferableTarget(cv2.dnn.DNN_TARGET_CPU)
 
     # wind_name = 'face detection using YOLOv3'
     #cv2.namedWindow(wind_name, cv2.WINDOW_NORMAL)
     output_file = ''
-    foutput = foutputdir + "/tmp"+foutputname 
+    foutput = foutputdir + os.sep +foutputname 
     cap = None
     print("finput:"+finput)
     print("filetype:"+filetype)
@@ -161,12 +163,19 @@ def analyze(filetype,finput,foutputdir,foutputname):
     cv2.destroyAllWindows()
     if(not video_writer == None):
         video_writer.release()
-    foutput = foutputdir + "/tmp"+foutputname
+    # foutput = foutputdir + "/tmp"+foutputname
     time.sleep(1)
-    os.rename(foutput,foutputdir + "/"+foutputname) 
+    # os.rename(foutput,foutputdir + os.sep+foutputname) 
     print('==> All done!')
     print('***********************************************************')
 
 
-# if __name__ == '__main__':
-#     _main()
+if __name__ == '__main__':
+    
+     finputpath = "C:"+os.sep+"work"+os.sep+"kapp"+os.sep+"kapp"+os.sep+"application"+os.sep+"input\*"  
+     foutputdir = "C:"+os.sep+"work"+os.sep+"kapp"+os.sep+"kapp"+os.sep+"application"+os.sep+"output"
+     filename = "test.jpg"
+     files = glob.glob(finputpath)
+     for finputpath in files:
+        filename = os.path.split(finputpath)[1]
+        _main("image",finputpath,foutputdir,filename)

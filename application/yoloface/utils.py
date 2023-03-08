@@ -16,7 +16,8 @@
 import datetime
 import numpy as np
 import cv2
-import yoloface.sexmodel.sexnet as snet
+# import yoloface.sexmodel.sexnet as snet
+import os
 from PIL import Image
 # -------------------------------------------------------------------
 # Parameters
@@ -98,36 +99,23 @@ def post_process(frame, outs, conf_threshold, nms_threshold):
     for i in indices:
         # i = i[0]
         box = boxes[i]
-        # left = box[0] - int(box[0] * 0.5)
-        # top = box[1] - int(box[1] * 1.0)
-        # width = box[2] + int(box[2] * 0.5)
-        height = box[3] + int(box[3] * 1.0)
-        width  = box[2] + int(box[2] * 0.5)
-        height = box[3] + int (box[3] * 0.5)
-        left   = box[0] -int(width / 6)
-        top    = box[1] -int(height / 6)
-        # left   = box[0]
-        # top    = box[1]
-        # width  = box[2]
-        # height = box[3]
-        # if(left < 0 ):
-        #     left = 0
-        # if(top < 0 ):
-        #     top = 0
-        
-        # print(left)
-        # print(top)
-        # print(width)
-        # print(height)
+        left   = box[0]
+        top    = box[1]
+        width  = box[2]
+        height = box[3]
         final_boxes.append(box)
         
         #顔の切り抜き 23.3.7 m.koyama
-        left, top, right, bottom = refined_box(left, top, width, height)
-        dst = frame.astype(np.uint8)[top:top+height, left:left+width]
-        print("-----------dsttype")
-        print(type(dst))
-        sex = snet.predict(dst)
-        print(sex)
+        # left, top, right, bottom = refined_box(left, top, width, height)
+        bottom = top + height
+        right = left + width
+        dst = frame.astype(np.uint8)[top:bottom, left:right]
+        # dst = frame.astype(np.uint8)[top:top+height, left:left+width]
+        cv2.imwrite(os.path.join("output", "aaa"+str(i)+".jpg"),dst)
+        # print("-----------dsttype")
+        # print(type(dst))
+        # sex = snet.predict(dst)
+        # print(sex)
         # cv2.imwrite('c:\work\outfile'+str(i)+'.jpg',dst)
         # draw_predict(frame, confidences[i], left, top, left + width,
         #              top + height)
@@ -137,7 +125,8 @@ def post_process(frame, outs, conf_threshold, nms_threshold):
         # width  = box[2]
         # height = box[3]
         # left, top, right, bottom = refined_box(left, top, width, height)
-        draw_predict(frame, sex , left, top, right, bottom)
+        text = "face"
+        draw_predict(frame, text , left, top, right, bottom)
     return final_boxes
 
 
