@@ -101,15 +101,15 @@ def post_process(frame, outs, conf_threshold, nms_threshold):
         # left = box[0] - int(box[0] * 0.5)
         # top = box[1] - int(box[1] * 1.0)
         # width = box[2] + int(box[2] * 0.5)
-        height = box[3] + int(box[3] * 1.0)
-        width  = box[2] + int(box[2] * 0.5)
-        height = box[3] + int (box[3] * 0.5)
-        left   = box[0] -int(width / 6)
-        top    = box[1] -int(height / 6)
-        # left   = box[0]
-        # top    = box[1]
-        # width  = box[2]
-        # height = box[3]
+        # height = box[3] + int(box[3] * 1.0)
+        # width  = box[2] + int(box[2] * 0.5)
+        # height = box[3] + int (box[3] * 0.5)
+        # left   = box[0] -int(width / 6)
+        # top    = box[1] -int(height / 6)
+        left   = box[0]
+        top    = box[1]
+        width  = box[2]
+        height = box[3]
         # if(left < 0 ):
         #     left = 0
         # if(top < 0 ):
@@ -122,7 +122,9 @@ def post_process(frame, outs, conf_threshold, nms_threshold):
         final_boxes.append(box)
         
         #顔の切り抜き 23.3.7 m.koyama
-        left, top, right, bottom = refined_box(left, top, width, height)
+        # left, top, right, bottom = refined_box(left, top, width, height)
+        right = left + width
+        bottom = top + height
         dst = frame.astype(np.uint8)[top:top+height, left:left+width]
         print("-----------dsttype")
         print(type(dst))
