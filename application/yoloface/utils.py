@@ -66,7 +66,7 @@ def draw_predict(frame, conf, left, top, right, bottom):
                 COLOR_RED, 1)
 
 
-def post_process(frame, outs, conf_threshold, nms_threshold):
+def post_process(frame, outs, conf_threshold, nms_threshold,foutputname):
     frame_height = frame.shape[0]
     frame_width = frame.shape[1]
 
@@ -111,7 +111,8 @@ def post_process(frame, outs, conf_threshold, nms_threshold):
         right = left + width
         dst = frame.astype(np.uint8)[top:bottom, left:right]
         # dst = frame.astype(np.uint8)[top:top+height, left:left+width]
-        cv2.imwrite(os.path.join("output", "aaa"+str(i)+".jpg"),dst)
+        print(foutputname)
+        cv2.imwrite(os.path.join("output", foutputname),dst)
         # print("-----------dsttype")
         # print(type(dst))
         # sex = snet.predict(dst)

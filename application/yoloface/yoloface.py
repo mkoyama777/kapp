@@ -118,7 +118,7 @@ def _main(filetype,finput,foutputdir,foutputname):
         outs = net.forward(get_outputs_names(net))
 
         # Remove the bounding boxes with low confidence
-        faces = post_process(frame, outs, CONF_THRESHOLD, NMS_THRESHOLD)
+        faces = post_process(frame, outs, CONF_THRESHOLD, NMS_THRESHOLD,foutputname)
         print('[i] ==> # detected faces: {}'.format(len(faces)))
         print(type(faces))
         print(type(faces[0]))
@@ -129,26 +129,27 @@ def _main(filetype,finput,foutputdir,foutputname):
             ('number of faces detected', '{}'.format(len(faces)))
         ]
 
-        for (i, (txt, val)) in enumerate(info):
-            text = '{}: {}'.format(txt, val)
+        # for (i, (txt, val)) in enumerate(info):
+        #     text = '{}: {}'.format(txt, val)
 
             #TODO 23.3.5
             # 顔を切り出し、予測をかける
             # 取得したラベルをtextにセットする。
-            print("----------------------------")
-            print(txt+":"+val)
+            # print("----------------------------")
+            # print(txt+":"+val)
             
                 
 
 
 
-            cv2.putText(frame, text, (10, (i * 20) + 20),
-                        cv2.FONT_HERSHEY_SIMPLEX, 0.7, COLOR_RED, 2)
+            # cv2.putText(frame, text, (10, (i * 20) + 20),
+            #             cv2.FONT_HERSHEY_SIMPLEX, 0.7, COLOR_RED, 2)
         
 
         # Save the output video to file
         if filetype=="image":
-            cv2.imwrite(output_file, frame.astype(np.uint8))
+            print("")
+            # cv2.imwrite(output_file, frame.astype(np.uint8))
         else:
             video_writer.write(frame.astype(np.uint8))
 
@@ -164,7 +165,7 @@ def _main(filetype,finput,foutputdir,foutputname):
     if(not video_writer == None):
         video_writer.release()
     # foutput = foutputdir + "/tmp"+foutputname
-    time.sleep(1)
+    # time.sleep(1)
     # os.rename(foutput,foutputdir + os.sep+foutputname) 
     print('==> All done!')
     print('***********************************************************')
@@ -176,6 +177,14 @@ if __name__ == '__main__':
      foutputdir = "C:"+os.sep+"work"+os.sep+"kapp"+os.sep+"kapp"+os.sep+"application"+os.sep+"output"
      filename = "test.jpg"
      files = glob.glob(finputpath)
+     cnt = 0
      for finputpath in files:
+        cnt = cnt + 1
+        if cnt % 100 == 0:
+            print(cnt)
         filename = os.path.split(finputpath)[1]
-        _main("image",finputpath,foutputdir,filename)
+        try:
+            _main("image",finputpath,foutputdir,filename)
+        except Exception as e:
+            print(filename)
+            print(e)
