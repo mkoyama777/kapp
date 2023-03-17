@@ -22,7 +22,7 @@ import time
 import argparse
 import sys
 import os
-from yoloface.sexmodel.sexnet import *
+from yoloface.sexmodel.sexnet2 import *
 
 
 
@@ -162,7 +162,7 @@ def analyze(filetype,finput,foutputdir,foutputname):
     if(not video_writer == None):
         video_writer.release()
     foutput = foutputdir + "/tmp"+foutputname
-    time.sleep(1)
+    # time.sleep(1)
     os.rename(foutput,foutputdir + "/"+foutputname) 
     print('==> All done!')
     print('***********************************************************')
