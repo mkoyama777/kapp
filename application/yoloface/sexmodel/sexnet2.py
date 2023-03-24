@@ -91,7 +91,7 @@ def predict(img):
     parent_dir = os.path.abspath(parent_dir)
     print("sexweight:"+parent_dir)
     net = Net().cpu().eval()
-    net.load_state_dict(torch.load(parent_dir+os.sep+'sex_case_yolocut.pt', map_location=torch.device('cpu')))
+    net.load_state_dict(torch.load(parent_dir+os.sep+'sex_case5_yolocut.pt', map_location=torch.device('cpu')))
     img = Image.fromarray(img)
     # image = Image.open(img).convert("RGB")
     data = transform(img)
