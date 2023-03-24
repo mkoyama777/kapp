@@ -140,8 +140,8 @@ def analyze(filetype,finput,foutputdir,foutputname):
 
 
 
-            cv2.putText(frame, text, (10, (i * 20) + 20),
-                        cv2.FONT_HERSHEY_SIMPLEX, 0.7, COLOR_RED, 2)
+            # cv2.putText(frame, text, (10, (i * 20) + 20),
+            #             cv2.FONT_HERSHEY_SIMPLEX, 0.7, COLOR_RED, 2)
         
 
         # Save the output video to file
