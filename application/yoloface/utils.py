@@ -111,8 +111,13 @@ def post_process(frame, outs, conf_threshold, nms_threshold,foutputname):
         right = left + width
         dst = frame.astype(np.uint8)[top:bottom, left:right]
         # dst = frame.astype(np.uint8)[top:top+height, left:left+width]
-        print(foutputname)
-        cv2.imwrite(os.path.join("output", foutputname),dst)
+        print("-----------0324")
+        foutputname_base = filename_no_extension = os.path.splitext(foutputname)[0]
+        foutputname_ext = filename_no_extension = os.path.splitext(foutputname)[1]
+        # print(foutputname+str(i))
+        print(os.path.join("output", foutputname_base+str(i)+"."+foutputname_ext))
+        cv2.imwrite(os.path.join("output", foutputname_base+str(i)+"."+foutputname_ext),dst)
+        # cv2.imwrite(foutputname,dst)
         # print("-----------dsttype")
         # print(type(dst))
         # sex = snet.predict(dst)
