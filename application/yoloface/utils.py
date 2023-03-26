@@ -116,6 +116,10 @@ def post_process(frame, outs, conf_threshold, nms_threshold):
         #     left = 0
         # if(top < 0 ):
         #     top = 0
+        height = int(height * (1 + 0.4))
+        width = int(width * (1 + 0.4))
+        top = top - int(height / 4)
+        left = left - int(width / 8)
         
         # print(left)
         # print(top)
@@ -126,11 +130,10 @@ def post_process(frame, outs, conf_threshold, nms_threshold):
         #顔の切り抜き 23.3.7 m.koyama
         # left, top, right, bottom = refined_box(left, top, width, height)
         
-        # height_wk = int(height * (1 + 0.2))
-        # width_wk = int(width * (1 + 0.4))
-        # top_wk = top - int(height_wk / 10)
-        # left_wk = left - int(width_wk / 10)
-
+        if top < 0:
+            top = 0
+        if left < 0:
+            left = 0
         # top = top_wk
         # left = left_wk
         # width = width_wk
