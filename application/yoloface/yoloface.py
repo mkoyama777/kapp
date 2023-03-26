@@ -56,7 +56,7 @@ print('----- info -----')
 
 # check outputs directory
 
-def analyze(filetype,finput,foutputdir,foutputname):
+def _main(filetype,finput,foutputdir,foutputname):
     print("--------tracking start")
     net = cv2.dnn.readNetFromDarknet('./yoloface/cfg/yolov3-face.cfg', './yoloface/model-weights/yolov3-wider_16000.weights')
     net.setPreferableBackend(cv2.dnn.DNN_BACKEND_OPENCV)
