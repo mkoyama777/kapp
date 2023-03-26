@@ -52,8 +52,10 @@ def get_outputs_names(net):
 # Draw the predicted bounding box
 def draw_predict(frame, conf, left, top, right, bottom):
     # Draw a bounding box.
-    cv2.rectangle(frame, (left, top), (right, bottom), COLOR_YELLOW, 2)
-
+    if conf == 'male':
+        cv2.rectangle(frame, (left, top), (right, bottom), COLOR_YELLOW, 2)
+    else:
+        cv2.rectangle(frame, (left, top), (right, bottom), COLOR_RED, 2)
     # text = '{:.2f}'.format(conf)
     text = '{:.20s}'.format(conf)
 
@@ -134,10 +136,10 @@ def post_process(frame, outs, conf_threshold, nms_threshold):
         # width = width_wk
         # height = height_wk
 
-        # right = left + width
-        # bottom = top + height
+        right = left + width
+        bottom = top + height
         
-        dst = frame.astype(np.uint8)[top:top+height, left:left+width]
+        dst = frame.astype(np.uint8)[top:bottom, left:right]
         # dst = frame.astype(np.uint8)[top_wk:top_wk+height_wk, left_wk:left_wk+width_wk]
         print("-----------dsttype")
         print(type(dst))
