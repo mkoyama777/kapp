@@ -124,21 +124,21 @@ def post_process(frame, outs, conf_threshold, nms_threshold):
         #顔の切り抜き 23.3.7 m.koyama
         # left, top, right, bottom = refined_box(left, top, width, height)
         
-        height_wk = int(height * (1 + 0.2))
-        width_wk = int(width * (1 + 0.4))
-        top_wk = top - int(height_wk / 10)
-        left_wk = left - int(width_wk / 10)
+        # height_wk = int(height * (1 + 0.2))
+        # width_wk = int(width * (1 + 0.4))
+        # top_wk = top - int(height_wk / 10)
+        # left_wk = left - int(width_wk / 10)
 
-        top = top_wk
-        left = left_wk
-        width = width_wk
-        height = height_wk
+        # top = top_wk
+        # left = left_wk
+        # width = width_wk
+        # height = height_wk
 
-        right = left + width
-        bottom = top + height
+        # right = left + width
+        # bottom = top + height
         
-        
-        dst = frame.astype(np.uint8)[top_wk:top_wk+height_wk, left_wk:left_wk+width_wk]
+        dst = frame.astype(np.uint8)[top:top+height, left:left+width]
+        # dst = frame.astype(np.uint8)[top_wk:top_wk+height_wk, left_wk:left_wk+width_wk]
         print("-----------dsttype")
         print(type(dst))
         sex = snet.predict(dst)
