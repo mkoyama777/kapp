@@ -16,7 +16,8 @@
 import datetime
 import numpy as np
 import cv2
-import yoloface.sexmodel.sexnet2 as snet
+import os
+# import yoloface.sexmodel.sexnet2 as snet
 from PIL import Image
 # -------------------------------------------------------------------
 # Parameters
@@ -67,7 +68,7 @@ def draw_predict(frame, conf, left, top, right, bottom):
                 COLOR_RED, 1)
 
 
-def post_process(frame, outs, conf_threshold, nms_threshold):
+def post_process(frame, outs, conf_threshold, nms_threshold,outputname):
     frame_height = frame.shape[0]
     frame_width = frame.shape[1]
 
@@ -125,7 +126,7 @@ def post_process(frame, outs, conf_threshold, nms_threshold):
         # print(top)
         # print(width)
         # print(height)
-        final_boxes.append(box)
+        # final_boxes.append(box)
         
         #顔の切り抜き 23.3.7 m.koyama
         # left, top, right, bottom = refined_box(left, top, width, height)
@@ -144,11 +145,12 @@ def post_process(frame, outs, conf_threshold, nms_threshold):
         
         dst = frame.astype(np.uint8)[top:bottom, left:right]
         # dst = frame.astype(np.uint8)[top_wk:top_wk+height_wk, left_wk:left_wk+width_wk]
-        print("-----------dsttype")
-        print(type(dst))
-        sex = snet.predict(dst)
-        print(sex)
-        # cv2.imwrite('c:\work\outfile'+str(i)+'.jpg',dst)
+        # print("-----------dsttype")
+        # print(type(dst))
+        # sex = snet.predict(dst)
+        # print(sex)
+        print(os.path. splitext(os.path.basename(outputname))[0])
+        cv2.imwrite('output'+os.sep+os.path.basename(outputname)+str(i)+'.jpg',dst)
         # draw_predict(frame, confidences[i], left, top, left + width,
         #              top + height)
         # box = boxes[i]
@@ -157,7 +159,7 @@ def post_process(frame, outs, conf_threshold, nms_threshold):
         # width  = box[2]
         # height = box[3]
         # left, top, right, bottom = refined_box(left, top, width, height)
-        draw_predict(frame, sex , left, top, right, bottom)
+        # draw_predict(frame, sex , left, top, right, bottom)
     return final_boxes
 
 

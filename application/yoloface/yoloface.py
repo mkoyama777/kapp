@@ -22,11 +22,11 @@ import time
 import argparse
 import sys
 import os
-from yoloface.sexmodel.sexnet2 import *
+# from yoloface.sexmodel.sexnet2 import *
+import glob
+import threading
 
-
-
-from yoloface.utils import *
+from utils import *
 
 #####################################################################
 #parser = argparse.ArgumentParser()
@@ -56,28 +56,30 @@ print('----- info -----')
 
 # check outputs directory
 
+net = cv2.dnn.readNetFromDarknet('./cfg/yolov3-face.cfg', './model-weights/yolov3-wider_16000.weights')
+net.setPreferableBackend(cv2.dnn.DNN_BACKEND_OPENCV)
+net.setPreferableTarget(cv2.dnn.DNN_TARGET_CPU)
+pcnt = 0
 def _main(filetype,finput,foutputdir,foutputname):
-    print("--------tracking start")
-    net = cv2.dnn.readNetFromDarknet('./yoloface/cfg/yolov3-face.cfg', './yoloface/model-weights/yolov3-wider_16000.weights')
-    net.setPreferableBackend(cv2.dnn.DNN_BACKEND_OPENCV)
-    net.setPreferableTarget(cv2.dnn.DNN_TARGET_CPU)
-
+    global pcnt
+    print("--------tracking start:"+str(pcnt))
+    pcnt = pcnt + 1
     # wind_name = 'face detection using YOLOv3'
     #cv2.namedWindow(wind_name, cv2.WINDOW_NORMAL)
     output_file = ''
     foutput = foutputdir + "/tmp"+foutputname 
     cap = None
-    print("finput:"+finput)
-    print("filetype:"+filetype)
+    # print("finput:"+finput)
+    # print("filetype:"+filetype)
     if filetype=="image":
         if not os.path.isfile(finput):
-            print("[!] ==> Input image file {} doesn't exist".format(finput))
+            # print("[!] ==> Input image file {} doesn't exist".format(finput))
             sys.exit(1)
         cap = cv2.VideoCapture(finput)
         output_file = foutput
     elif filetype=="movie":
         if not os.path.isfile(finput):
-            print("[!] ==> Input video file {} doesn't exist".format(finput))
+            # print("[!] ==> Input video file {} doesn't exist".format(finput))
             sys.exit(1)
         cap = cv2.VideoCapture(finput)
         output_file = foutput
@@ -100,8 +102,8 @@ def _main(filetype,finput,foutputdir,foutputname):
 
         # Stop the program if reached end of video
         if not has_frame:
-            print('[i] ==> Done processing!!!')
-            print('[i] ==> Output file is stored at', output_file)
+            # print('[i] ==> Done processing!!!')
+            # print('[i] ==> Output file is stored at', output_file)
             cv2.waitKey(1000)
             break
 
@@ -116,12 +118,12 @@ def _main(filetype,finput,foutputdir,foutputname):
         outs = net.forward(get_outputs_names(net))
 
         # Remove the bounding boxes with low confidence
-        faces = post_process(frame, outs, CONF_THRESHOLD, NMS_THRESHOLD)
-        print('[i] ==> # detected faces: {}'.format(len(faces)))
-        print(type(faces))
-        print(type(faces[0]))
+        faces = post_process(frame, outs, CONF_THRESHOLD, NMS_THRESHOLD,foutputname)
+        # print('[i] ==> # detected faces: {}'.format(len(faces)))
+        # print(type(faces))
+        # print(type(faces[0]))
 
-        print('#' * 60)
+        # print('#' * 60)
         # initialize the set of information we'll displaying on the frame
         info = [
             ('number of faces detected', '{}'.format(len(faces)))
@@ -133,8 +135,8 @@ def _main(filetype,finput,foutputdir,foutputname):
             #TODO 23.3.5
             # 顔を切り出し、予測をかける
             # 取得したラベルをtextにセットする。
-            print("----------------------------")
-            print(txt+":"+val)
+            # print("----------------------------")
+            # print(txt+":"+val)
             
                 
 
@@ -145,10 +147,10 @@ def _main(filetype,finput,foutputdir,foutputname):
         
 
         # Save the output video to file
-        if filetype=="image":
-            cv2.imwrite(output_file, frame.astype(np.uint8))
-        else:
-            video_writer.write(frame.astype(np.uint8))
+        # if filetype=="image":
+        #     # cv2.imwrite(output_file, frame.astype(np.uint8))
+        # else:
+        #     video_writer.write(frame.astype(np.uint8))
 
         #cv2.imshow(wind_name, frame)
 
@@ -161,27 +163,32 @@ def _main(filetype,finput,foutputdir,foutputname):
     cv2.destroyAllWindows()
     if(not video_writer == None):
         video_writer.release()
-    foutput = foutputdir + "/tmp"+foutputname
+    # foutput = foutputdir + "/tmp"+foutputname
     # time.sleep(1)
-    os.rename(foutput,foutputdir + "/"+foutputname) 
-    print('==> All done!')
-    print('***********************************************************')
+    # os.rename(foutput,foutputdir + "/"+foutputname) 
+    # print('==> All done!')
+    # print('***********************************************************')
 
 
 if __name__ == '__main__':
     
-     finputpath = "C:"+os.sep+"work"+os.sep+"kapp"+os.sep+"kapp"+os.sep+"application"+os.sep+"input\*"  
-     foutputdir = "C:"+os.sep+"work"+os.sep+"kapp"+os.sep+"kapp"+os.sep+"application"+os.sep+"output"
+     finputpath = "C:"+os.sep+"work"+os.sep+"kapp"+os.sep+"application"+os.sep+"input\*"  
+     foutputdir = "C:"+os.sep+"work"+os.sep+"kapp"+os.sep+"application"+os.sep+"output"
      filename = "test.jpg"
      files = glob.glob(finputpath)
      cnt = 0
+     print("filecnt_total:"+str(len(files)))
      for finputpath in files:
         cnt = cnt + 1
         if cnt % 100 == 0:
-            print(cnt)
+            print("cnt:"+str(cnt))
         filename = os.path.split(finputpath)[1]
         try:
-            _main("image",finputpath,foutputdir,filename)
+            th = threading.Thread(target=_main,args=["image",finputpath,foutputdir,filename])
+            th.start()
+            # _main("image",finputpath,foutputdir,filename)
+            time.sleep(0.5)
         except Exception as e:
             print(filename)
             print(e)
+     print("-----------------END-----------------")
