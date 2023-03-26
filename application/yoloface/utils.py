@@ -112,6 +112,11 @@ def post_process(frame, outs, conf_threshold, nms_threshold):
         top    = box[1]
         width  = box[2]
         height = box[3]
+        height = int(height * (1 + 0.4))
+        width = int(width * (1 + 0.4))
+        top = top - int(height / 4)
+        left = left - int(width / 8)
+
         # if(left < 0 ):
         #     left = 0
         # if(top < 0 ):
