@@ -168,5 +168,20 @@ def analyze(filetype,finput,foutputdir,foutputname):
     print('***********************************************************')
 
 
-# if __name__ == '__main__':
-#     _main()
+if __name__ == '__main__':
+    
+     finputpath = "C:"+os.sep+"work"+os.sep+"kapp"+os.sep+"kapp"+os.sep+"application"+os.sep+"input\*"  
+     foutputdir = "C:"+os.sep+"work"+os.sep+"kapp"+os.sep+"kapp"+os.sep+"application"+os.sep+"output"
+     filename = "test.jpg"
+     files = glob.glob(finputpath)
+     cnt = 0
+     for finputpath in files:
+        cnt = cnt + 1
+        if cnt % 100 == 0:
+            print(cnt)
+        filename = os.path.split(finputpath)[1]
+        try:
+            _main("image",finputpath,foutputdir,filename)
+        except Exception as e:
+            print(filename)
+            print(e)
