@@ -67,17 +67,17 @@ def analyze(filetype,finput,foutputdir,foutputname):
     output_file = ''
     foutput = foutputdir + "/tmp"+foutputname 
     cap = None
-    print("finput:"+finput)
-    print("filetype:"+filetype)
+    # print("finput:"+finput)
+    # print("filetype:"+filetype)
     if filetype=="image":
         if not os.path.isfile(finput):
-            print("[!] ==> Input image file {} doesn't exist".format(finput))
+            # print("[!] ==> Input image file {} doesn't exist".format(finput))
             sys.exit(1)
         cap = cv2.VideoCapture(finput)
         output_file = foutput
     elif filetype=="movie":
         if not os.path.isfile(finput):
-            print("[!] ==> Input video file {} doesn't exist".format(finput))
+            # print("[!] ==> Input video file {} doesn't exist".format(finput))
             sys.exit(1)
         cap = cv2.VideoCapture(finput)
         output_file = foutput
@@ -100,8 +100,8 @@ def analyze(filetype,finput,foutputdir,foutputname):
 
         # Stop the program if reached end of video
         if not has_frame:
-            print('[i] ==> Done processing!!!')
-            print('[i] ==> Output file is stored at', output_file)
+            # print('[i] ==> Done processing!!!')
+            # print('[i] ==> Output file is stored at', output_file)
             cv2.waitKey(1000)
             break
 
@@ -117,9 +117,8 @@ def analyze(filetype,finput,foutputdir,foutputname):
 
         # Remove the bounding boxes with low confidence
         faces = post_process(frame, outs, CONF_THRESHOLD, NMS_THRESHOLD)
-        print('[i] ==> # detected faces: {}'.format(len(faces)))
-        print(type(faces))
-        print(type(faces[0]))
+        # print('[i] ==> # detected faces: {}'.format(len(faces)))
+
 
         print('#' * 60)
         # initialize the set of information we'll displaying on the frame
@@ -133,8 +132,8 @@ def analyze(filetype,finput,foutputdir,foutputname):
             #TODO 23.3.5
             # 顔を切り出し、予測をかける
             # 取得したラベルをtextにセットする。
-            print("----------------------------")
-            print(txt+":"+val)
+            # print("----------------------------")
+            # print(txt+":"+val)
             
                 
 

@@ -33,10 +33,10 @@ transform = transforms.Compose([
 class Net(pl.LightningModule):
     def __init__(self):
         super().__init__()
-        # self.feature =resnet18(pretrained=True)
+        self.feature =resnet18(pretrained=True)
         # self.feature =resnet34(pretrained=True)
         # self.feature =resnet50(pretrained=True)
-        self.feature =resnet101(pretrained=True)
+        # self.feature =resnet101(pretrained=True)
         # self.feature =resnet152(pretrained=True)
 
         # self.feature  = torch.hub.load('pytorch/vision:v0.10.0', 'wide_resnet101_2', pretrained=True)
@@ -89,7 +89,7 @@ parent_dir = "yoloface"+os.sep+"model-weights"+os.sep
 parent_dir = os.path.abspath(parent_dir)
 print("sexweight:"+parent_dir)
 net = Net().cpu().eval()
-net.load_state_dict(torch.load(parent_dir+os.sep+'sex_case5_yolocut.pt', map_location=torch.device('cpu')))
+net.load_state_dict(torch.load(parent_dir+os.sep+'sex_case7_yolocut.pt', map_location=torch.device('cpu')))
 
 def predict(img):
     img = Image.fromarray(img)
@@ -103,8 +103,8 @@ def predict(img):
     return get_label(data)
 
 def get_label(lbl):
-    print("----------lbl")
-    print(lbl[0])
+    # print("----------lbl")
+    # print(lbl[0])
     if lbl[0] == 0:
         return 'male'
     if lbl[0] == 1:

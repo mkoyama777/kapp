@@ -130,10 +130,10 @@ def post_process(frame, outs, conf_threshold, nms_threshold):
         #顔の切り抜き 23.3.7 m.koyama
         # left, top, right, bottom = refined_box(left, top, width, height)
         
-        if top < 0:
-            top = 0
-        if left < 0:
-            left = 0
+        # if top < 0:
+        #     top = 0
+        # if left < 0:
+        #     left = 0
         # top = top_wk
         # left = left_wk
         # width = width_wk
@@ -144,10 +144,14 @@ def post_process(frame, outs, conf_threshold, nms_threshold):
         
         dst = frame.astype(np.uint8)[top:bottom, left:right]
         # dst = frame.astype(np.uint8)[top_wk:top_wk+height_wk, left_wk:left_wk+width_wk]
-        print("-----------dsttype")
-        print(type(dst))
-        sex = snet.predict(dst)
-        print(sex)
+        # print("-----------dsttype")
+        # print(type(dst))
+        sex = ""
+        try:
+            sex = snet.predict(dst)
+        except Exception as e:
+            print("error")
+        # print(sex)
         # cv2.imwrite('c:\work\outfile'+str(i)+'.jpg',dst)
         # draw_predict(frame, confidences[i], left, top, left + width,
         #              top + height)
