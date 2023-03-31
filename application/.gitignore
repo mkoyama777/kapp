@@ -2,3 +2,5 @@ input/*
 output/*
 *.zip
 yoloface/*.zip
+__pycache__
+__pycache__/*
