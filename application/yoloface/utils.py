@@ -17,6 +17,7 @@ import datetime
 import numpy as np
 import cv2
 import yoloface.sexmodel.sexnet2 as snet
+import yoloface.agemodel.agenet as anet
 from PIL import Image
 # -------------------------------------------------------------------
 # Parameters
@@ -50,14 +51,19 @@ def get_outputs_names(net):
 
 
 # Draw the predicted bounding box
-def draw_predict(frame, conf, left, top, right, bottom):
+def draw_predict(frame, sex,age, left, top, right, bottom):
     # Draw a bounding box.
-    if conf == 'male':
+    if sex == 'male':
         cv2.rectangle(frame, (left, top), (right, bottom), COLOR_YELLOW, 2)
     else:
         cv2.rectangle(frame, (left, top), (right, bottom), COLOR_RED, 2)
     # text = '{:.2f}'.format(conf)
-    text = '{:.20s}'.format(conf)
+    # if "male" == sex:
+    #     sex = '男性'
+    # else:
+    #     sex = '女性'
+    textstr = sex+":"+str(age)
+    text = '{:.20s}'.format(textstr)
 
     # Display the label at the top of the bounding box
     label_size, base_line = cv2.getTextSize(text, cv2.FONT_HERSHEY_SIMPLEX, 0.5, 1)
@@ -147,8 +153,10 @@ def post_process(frame, outs, conf_threshold, nms_threshold):
         # print("-----------dsttype")
         # print(type(dst))
         sex = ""
+        age = 0
         try:
             sex = snet.predict(dst)
+            age = anet.predict(dst)
         except Exception as e:
             print("error")
         # print(sex)
@@ -161,7 +169,7 @@ def post_process(frame, outs, conf_threshold, nms_threshold):
         # width  = box[2]
         # height = box[3]
         # left, top, right, bottom = refined_box(left, top, width, height)
-        draw_predict(frame, sex , left, top, right, bottom)
+        draw_predict(frame, sex ,age, left, top, right, bottom)
     return final_boxes
 
 
