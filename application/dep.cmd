@@ -6,4 +6,4 @@ mkdir upload
 mkdir output
 git add .
 git commit -m "dummy"
-git push origin xserver
+git push origin kapp_sexjudge_develop

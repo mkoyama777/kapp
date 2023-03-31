@@ -1,2 +1,9 @@
+<<<<<<< HEAD
 __pycache__
 __pycache__/*
+=======
+input/*
+output/*
+*.zip
+yoloface/*.zip
+>>>>>>> origin/honban
