@@ -16,7 +16,9 @@
 import datetime
 import numpy as np
 import cv2
-
+import yoloface.sexmodel.sexnet2 as snet
+import yoloface.agemodel.agenet as anet
+from PIL import Image
 # -------------------------------------------------------------------
 # Parameters
 # -------------------------------------------------------------------
@@ -49,18 +51,26 @@ def get_outputs_names(net):
 
 
 # Draw the predicted bounding box
-def draw_predict(frame, conf, left, top, right, bottom):
+def draw_predict(frame, sex,age, left, top, right, bottom):
     # Draw a bounding box.
-    cv2.rectangle(frame, (left, top), (right, bottom), COLOR_YELLOW, 2)
-
-    text = '{:.2f}'.format(conf)
+    if sex == 'male':
+        cv2.rectangle(frame, (left, top), (right, bottom), COLOR_YELLOW, 2)
+    else:
+        cv2.rectangle(frame, (left, top), (right, bottom), COLOR_RED, 2)
+    # text = '{:.2f}'.format(conf)
+    # if "male" == sex:
+    #     sex = '男性'
+    # else:
+    #     sex = '女性'
+    textstr = sex+":"+str(age)
+    text = '{:.20s}'.format(textstr)
 
     # Display the label at the top of the bounding box
     label_size, base_line = cv2.getTextSize(text, cv2.FONT_HERSHEY_SIMPLEX, 0.5, 1)
 
     top = max(top, label_size[1])
     cv2.putText(frame, text, (left, top - 4), cv2.FONT_HERSHEY_SIMPLEX, 0.4,
-                COLOR_WHITE, 1)
+                COLOR_RED, 1)
 
 
 def post_process(frame, outs, conf_threshold, nms_threshold):
@@ -96,15 +106,70 @@ def post_process(frame, outs, conf_threshold, nms_threshold):
     for i in indices:
         # i = i[0]
         box = boxes[i]
-        left = box[0]
-        top = box[1]
-        width = box[2]
+        # left = box[0] - int(box[0] * 0.5)
+        # top = box[1] - int(box[1] * 1.0)
+        # width = box[2] + int(box[2] * 0.5)
+        # height = box[3] + int(box[3] * 1.0)
+        # width  = box[2] + int(box[2] * 0.5)
+        # height = box[3] + int (box[3] * 0.5)
+        # left   = box[0] -int(width / 6)
+        # top    = box[1] -int(height / 6)
+        left   = box[0]
+        top    = box[1]
+        width  = box[2]
         height = box[3]
+        # if(left < 0 ):
+        #     left = 0
+        # if(top < 0 ):
+        #     top = 0
+        height = int(height * (1 + 0.4))
+        width = int(width * (1 + 0.4))
+        top = top - int(height / 4)
+        left = left - int(width / 8)
+        
+        # print(left)
+        # print(top)
+        # print(width)
+        # print(height)
         final_boxes.append(box)
-        left, top, right, bottom = refined_box(left, top, width, height)
+        
+        #顔の切り抜き 23.3.7 m.koyama
+        # left, top, right, bottom = refined_box(left, top, width, height)
+        
+        # if top < 0:
+        #     top = 0
+        # if left < 0:
+        #     left = 0
+        # top = top_wk
+        # left = left_wk
+        # width = width_wk
+        # height = height_wk
+
+        right = left + width
+        bottom = top + height
+        
+        dst = frame.astype(np.uint8)[top:bottom, left:right]
+        # dst = frame.astype(np.uint8)[top_wk:top_wk+height_wk, left_wk:left_wk+width_wk]
+        # print("-----------dsttype")
+        # print(type(dst))
+        sex = ""
+        age = 0
+        try:
+            sex = snet.predict(dst)
+            age = anet.predict(dst)
+        except Exception as e:
+            print("error")
+        # print(sex)
+        # cv2.imwrite('c:\work\outfile'+str(i)+'.jpg',dst)
         # draw_predict(frame, confidences[i], left, top, left + width,
         #              top + height)
-        draw_predict(frame, confidences[i], left, top, right, bottom)
+        # box = boxes[i]
+        # left   = box[0]
+        # top    = box[1]
+        # width  = box[2]
+        # height = box[3]
+        # left, top, right, bottom = refined_box(left, top, width, height)
+        draw_predict(frame, sex ,age, left, top, right, bottom)
     return final_boxes
 
 

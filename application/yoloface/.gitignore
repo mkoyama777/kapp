@@ -44,6 +44,7 @@ samples/
 model-weights/
 *.weights
 *.h5
+*.pt
 
 # Output files
 outputs/

@@ -22,6 +22,8 @@ import time
 import argparse
 import sys
 import os
+from yoloface.sexmodel.sexnet2 import *
+
 
 
 from yoloface.utils import *
@@ -65,17 +67,17 @@ def analyze(filetype,finput,foutputdir,foutputname):
     output_file = ''
     foutput = foutputdir + "/tmp"+foutputname 
     cap = None
-    print("finput:"+finput)
-    print("filetype:"+filetype)
+    # print("finput:"+finput)
+    # print("filetype:"+filetype)
     if filetype=="image":
         if not os.path.isfile(finput):
-            print("[!] ==> Input image file {} doesn't exist".format(finput))
+            # print("[!] ==> Input image file {} doesn't exist".format(finput))
             sys.exit(1)
         cap = cv2.VideoCapture(finput)
         output_file = foutput
     elif filetype=="movie":
         if not os.path.isfile(finput):
-            print("[!] ==> Input video file {} doesn't exist".format(finput))
+            # print("[!] ==> Input video file {} doesn't exist".format(finput))
             sys.exit(1)
         cap = cv2.VideoCapture(finput)
         output_file = foutput
@@ -98,8 +100,8 @@ def analyze(filetype,finput,foutputdir,foutputname):
 
         # Stop the program if reached end of video
         if not has_frame:
-            print('[i] ==> Done processing!!!')
-            print('[i] ==> Output file is stored at', output_file)
+            # print('[i] ==> Done processing!!!')
+            # print('[i] ==> Output file is stored at', output_file)
             cv2.waitKey(1000)
             break
 
@@ -115,7 +117,9 @@ def analyze(filetype,finput,foutputdir,foutputname):
 
         # Remove the bounding boxes with low confidence
         faces = post_process(frame, outs, CONF_THRESHOLD, NMS_THRESHOLD)
-        print('[i] ==> # detected faces: {}'.format(len(faces)))
+        # print('[i] ==> # detected faces: {}'.format(len(faces)))
+
+
         print('#' * 60)
         # initialize the set of information we'll displaying on the frame
         info = [
@@ -124,8 +128,20 @@ def analyze(filetype,finput,foutputdir,foutputname):
 
         for (i, (txt, val)) in enumerate(info):
             text = '{}: {}'.format(txt, val)
-            cv2.putText(frame, text, (10, (i * 20) + 20),
-                        cv2.FONT_HERSHEY_SIMPLEX, 0.7, COLOR_RED, 2)
+
+            #TODO 23.3.5
+            # 顔を切り出し、予測をかける
+            # 取得したラベルをtextにセットする。
+            # print("----------------------------")
+            # print(txt+":"+val)
+            
+                
+
+
+
+            # cv2.putText(frame, text, (10, (i * 20) + 20),
+            #             cv2.FONT_HERSHEY_SIMPLEX, 0.7, COLOR_RED, 2)
+        
 
         # Save the output video to file
         if filetype=="image":
@@ -145,7 +161,7 @@ def analyze(filetype,finput,foutputdir,foutputname):
     if(not video_writer == None):
         video_writer.release()
     foutput = foutputdir + "/tmp"+foutputname
-    time.sleep(1)
+    # time.sleep(1)
     os.rename(foutput,foutputdir + "/"+foutputname) 
     print('==> All done!')
     print('***********************************************************')
