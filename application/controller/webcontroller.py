@@ -162,7 +162,7 @@ def download(request,session):
         # attachment_filename=fname)    
 
 handler = WebhookHandler("5da1e2c95b043c10849ff141cf7beef2")  
-def webhook(request):
+def webhook(request,session):
     #LINEのWEBHOOkからのリクエストを受け取る
     signature = request.headers['X-Line-Signature']
     body = request.get_data(as_text=True)
