@@ -109,6 +109,7 @@ def post_process(frame, outs, conf_threshold, nms_threshold):
         print("face detect:"+str(i))
         # i = i[0]
         box = boxes[i]
+        print(112)
         # left = box[0] - int(box[0] * 0.5)
         # top = box[1] - int(box[1] * 1.0)
         # width = box[2] + int(box[2] * 0.5)
@@ -121,6 +122,7 @@ def post_process(frame, outs, conf_threshold, nms_threshold):
         top    = box[1]
         width  = box[2]
         height = box[3]
+        print(125)
         # if(left < 0 ):
         #     left = 0
         # if(top < 0 ):
@@ -135,7 +137,7 @@ def post_process(frame, outs, conf_threshold, nms_threshold):
         # print(width)
         # print(height)
         final_boxes.append(box)
-        
+        print(140)
         #顔の切り抜き 23.3.7 m.koyama
         # left, top, right, bottom = refined_box(left, top, width, height)
         
@@ -152,6 +154,7 @@ def post_process(frame, outs, conf_threshold, nms_threshold):
         bottom = top + height
         
         dst = frame.astype(np.uint8)[top:bottom, left:right]
+        print(152)
         # dst = frame.astype(np.uint8)[top_wk:top_wk+height_wk, left_wk:left_wk+width_wk]
         # print("-----------dsttype")
         # print(type(dst))
