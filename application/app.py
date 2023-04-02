@@ -48,6 +48,9 @@ def delfile():
 def download():
     return webctl.download(request,session)
 
+def webhook():
+    return webctl.webhook(request,session)
+
 @app.route("/init",methods=["GET"])
 def init():
     print("-----------------------init start ")
