@@ -48,7 +48,7 @@ def delfile():
 def download():
     return webctl.download(request,session)
 
-@app.route("/webhook",methods=["GET"])
+@app.route("/webhook",methods=["GET","POST"])
 def webhook():
     return webctl.webhook(request,session)
 
