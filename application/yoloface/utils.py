@@ -74,6 +74,7 @@ def draw_predict(frame, sex,age, left, top, right, bottom):
 
 
 def post_process(frame, outs, conf_threshold, nms_threshold):
+    print("post_process")
     frame_height = frame.shape[0]
     frame_width = frame.shape[1]
 
@@ -105,6 +106,7 @@ def post_process(frame, outs, conf_threshold, nms_threshold):
     sex = ""
     age = 0
     for i in indices:
+        print("face detect:"+i)
         # i = i[0]
         box = boxes[i]
         # left = box[0] - int(box[0] * 0.5)
