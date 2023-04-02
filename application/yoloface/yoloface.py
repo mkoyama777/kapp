@@ -56,7 +56,7 @@ print('----- info -----')
 
 # check outputs directory
 
-def analyze(filetype,finput,foutputdir,foutputname):
+def analyze(filetype,finput,foutputdir = None,foutputname = None):
     print("--------tracking start")
     net = cv2.dnn.readNetFromDarknet('./yoloface/cfg/yolov3-face.cfg', './yoloface/model-weights/yolov3-wider_16000.weights')
     net.setPreferableBackend(cv2.dnn.DNN_BACKEND_OPENCV)
@@ -65,7 +65,11 @@ def analyze(filetype,finput,foutputdir,foutputname):
     # wind_name = 'face detection using YOLOv3'
     #cv2.namedWindow(wind_name, cv2.WINDOW_NORMAL)
     output_file = ''
-    foutput = foutputdir + "/tmp"+foutputname 
+    foutput = None
+    if foutputdir is None:
+        print(foutputdir is None)
+    else:
+        foutput = foutputdir +   "/tmp"+foutputname 
     cap = None
     # print("finput:"+finput)
     # print("filetype:"+filetype)
@@ -116,18 +120,19 @@ def analyze(filetype,finput,foutputdir,foutputname):
         outs = net.forward(get_outputs_names(net))
 
         # Remove the bounding boxes with low confidence
-        faces = post_process(frame, outs, CONF_THRESHOLD, NMS_THRESHOLD)
+        sex,age = post_process(frame, outs, CONF_THRESHOLD, NMS_THRESHOLD)
         # print('[i] ==> # detected faces: {}'.format(len(faces)))
+        if foutputdir is None:
+            return sex,age
 
-
-        print('#' * 60)
+        print('#' * 10)
         # initialize the set of information we'll displaying on the frame
-        info = [
-            ('number of faces detected', '{}'.format(len(faces)))
-        ]
+        # info = [
+        #     ('number of faces detected', '{}'.format(len(faces)))
+        # ]
 
-        for (i, (txt, val)) in enumerate(info):
-            text = '{}: {}'.format(txt, val)
+        # for (i, (txt, val)) in enumerate(info):
+        #     text = '{}: {}'.format(txt, val)
 
             #TODO 23.3.5
             # 顔を切り出し、予測をかける
@@ -145,7 +150,10 @@ def analyze(filetype,finput,foutputdir,foutputname):
 
         # Save the output video to file
         if filetype=="image":
-            cv2.imwrite(output_file, frame.astype(np.uint8))
+            if output_file == None:
+                print("outputfile is none")
+            else:
+                cv2.imwrite(output_file, frame.astype(np.uint8))
         else:
             video_writer.write(frame.astype(np.uint8))
 

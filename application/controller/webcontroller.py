@@ -168,6 +168,8 @@ def webhook(request,session):
     #LINEのWEBHOOkからのリクエストを受け取る
     signature = request.headers['X-Line-Signature']
     body_base = request.get_data(as_text=True)
+    print("---------request")
+    print(body_base)
     #JSONを配列に変換する
     body = json.loads(body_base)
     msgtype = body['events'][0]['message']['type']
@@ -182,18 +184,23 @@ def webhook(request,session):
         
         inputdir = get_abs_uploaddir(request,uuiddata)
 
+        #ファイル名を取得する
+        
         #LINEから画像を取得する
         message_content = line_bot_api.get_message_content(body['events'][0]['message']['id'])
+        filename = "line.jpg"
+        inputfilename = inputdir + os.sep +  filename
         #画像をinputディレクトリに保存する
-        with open(inputdir + "/" + uuiddata + ".jpg", 'wb') as fd:
+        with open(inputfilename, 'wb') as fd:
             for chunk in message_content.iter_content():
                 fd.write(chunk)
-                #性別を推論する。
-                #年齢を性別する。
-                #性別/年齢をレスポンスで返す
-                #リクエストを受け取ったことをLINEに返す
-                line_bot_api.reply_message(body['events'][0]['replyToken'],TextSendMessage(text="性別/年齢を返す"))
-   
+        #性別を推論する。
+        sex,age = yolo.analyze("image",inputfilename)
+        #年齢を性別する。
+        #性別/年齢をレスポンスで返す
+        #リクエストを受け取ったことをLINEに返す
+        line_bot_api.reply_message(body['events'][0]['replyToken'],TextSendMessage(text="性別:"+sex+":年齢:"+age))
+
     else:
         print("対象外type")    
 

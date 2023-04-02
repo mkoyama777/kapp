@@ -102,7 +102,8 @@ def post_process(frame, outs, conf_threshold, nms_threshold):
     # overlapping boxes with lower confidences.
     indices = cv2.dnn.NMSBoxes(boxes, confidences, conf_threshold,
                                nms_threshold)
-
+    sex = ""
+    age = 0
     for i in indices:
         # i = i[0]
         box = boxes[i]
@@ -170,7 +171,7 @@ def post_process(frame, outs, conf_threshold, nms_threshold):
         # height = box[3]
         # left, top, right, bottom = refined_box(left, top, width, height)
         draw_predict(frame, sex ,age, left, top, right, bottom)
-    return final_boxes
+    return sex,age
 
 
 class FPS:
