@@ -106,7 +106,7 @@ def post_process(frame, outs, conf_threshold, nms_threshold):
     sex = ""
     age = 0
     for i in indices:
-        print("face detect:"+i)
+        print("face detect:"+str(i))
         # i = i[0]
         box = boxes[i]
         # left = box[0] - int(box[0] * 0.5)
@@ -159,7 +159,9 @@ def post_process(frame, outs, conf_threshold, nms_threshold):
         age = 0
         try:
             sex = snet.predict(dst)
+            print("sex:162:"+sex)
             age = anet.predict(dst)
+            print("age:162:"+str(age))
         except Exception as e:
             print("error")
         # print(sex)
