@@ -167,13 +167,13 @@ line_bot_api = LineBotApi("Y33TDISAJRQFqWKpAL2ET/k4abMEiToTrz7AObBuK5+a/2rljY5OR
 def webhook(request,session):
     #LINEのWEBHOOkからのリクエストを受け取る
     signature = request.headers['X-Line-Signature']
-    body = request.get_data(as_text=True)
+    body_base = request.get_data(as_text=True)
     #JSONを配列に変換する
-    body = json.loads(body)
+    body = json.loads(body_base)
     msgtype = body['events'][0]['message']['type']
     #リクエストがLINE Platformから送られてきたものか検証する
     try:
-        handler.handle(body, signature)
+        handler.handle(body_base, signature)
     except InvalidSignatureError:
         abort(400)
     #LINEより受信したリクエストがテキストか画像かを判定する
