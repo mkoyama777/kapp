@@ -178,7 +178,10 @@ def webhook(request,session):
         abort(400)
     #LINEより受信したリクエストがテキストか画像かを判定する
     if msgtype == "image":
-        reset(request)
+        uuiddata = reset(request)
+        
+        inputdir = get_abs_uploaddir(request,uuiddata)
+
         #LINEから画像を取得する
         message_content = line_bot_api.get_message_content(body['events'][0]['message']['id'])
         #画像をinputディレクトリに保存する
@@ -237,14 +240,17 @@ def get_uuid(request):
 
     return uuiddata
 
-def get_abs_uploaddir(request):    
-    return os.path.abspath(get_uploaddir(request))
+def get_abs_uploaddir(request,uuiddata = None):    
+    return os.path.abspath(get_uploaddir(request,uuiddata))
 
 def get_abs_outputdir(request):    
     return os.path.abspath(get_outputdir(request))
 
-def get_uploaddir(request):    
-    key = get_uuid(request)
+def get_uploaddir(request,uuiddata = None):    
+    key = uuiddata
+    if key is None:
+        key = get_uuid(request)
+    
     return UPLOAD_FOLDER + os.sep + key
 
 def get_outputdir(request):    
