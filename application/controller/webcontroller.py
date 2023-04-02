@@ -234,7 +234,12 @@ def get_filetype(filename):
         return "movie"
     
 def get_uuid(request):
-    return request.cookies.get('_kapp_uuid', None)
+    uuid = request.cookies.get('_kapp_uuid', None)
+    if uuiddata is None:
+        print("make new uuid")
+        uuiddata = str(uuid.uuid1())
+
+    return uuid
 
 def get_abs_uploaddir(request):    
     return os.path.abspath(get_uploaddir(request))
