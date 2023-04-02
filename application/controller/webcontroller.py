@@ -12,8 +12,9 @@ from flask import *
 from pathlib import Path
 from werkzeug.utils import secure_filename
 from concurrent.futures import ProcessPoolExecutor
-
-
+from linebot import WebhookHandler
+from linebot.exceptions import InvalidSignatureError
+from linebot.models import MessageEvent, TextMessage, TextSendMessage
 UPLOAD_FOLDER = 'upload'
 OUTPUT_FOLDER = 'output'
 # UPLOAD_FOLDER = os.path.abspath(UPLOAD_FOLDER)
@@ -158,7 +159,35 @@ def download(request,session):
         # filename=secure_filename(fname),
         # path=abs_dirname + os.sep +fname,
         # as_attachment=True)
-        # attachment_filename=fname)      
+        # attachment_filename=fname)    
+
+handler = WebhookHandler("5da1e2c95b043c10849ff141cf7beef2")  
+def webhook(request):
+    #LINEのWEBHOOkからのリクエストを受け取る
+    signature = request.headers['X-Line-Signature']
+    body = request.get_data(as_text=True)
+    print("Request body: " + body)
+    #リクエストがLINE Platformから送られてきたものか検証する
+    try:
+        handler.handle(body, signature)
+    except InvalidSignatureError:
+        abort(400)
+    #LINEより受信したリクエストがテキストか画像かを判定する
+
+    #テキストの場合はuuidを生成する。
+
+    #画像の場合はuuidを生成する。
+    #inputディレクトリにファイルを保存する
+    
+    #性別を推論する。
+    #年齢を性別する。
+
+    #性別/年齢をレスポンスで返す   
+ 
+
+    #リクエストを受け取ったことをLINEに返す
+
+    return 'OK'
 
 def changesuffix(filename):
     suffix = pathlib.Path(filename).suffix
