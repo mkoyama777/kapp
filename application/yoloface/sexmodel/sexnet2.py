@@ -92,14 +92,21 @@ net = Net().cpu().eval()
 net.load_state_dict(torch.load(parent_dir+os.sep+'sex_case7_yolocut.pt', map_location=torch.device('cpu')))
 
 def predict(img):
+    print("sexnet2 predict")
     img = Image.fromarray(img)
     # image = Image.open(img).convert("RGB")
+    print("sexnet2 transform")
     data = transform(img)
     # 画像から配列に変換
+    print("net instance")
     data = net(data.unsqueeze(0))
+    print("net softmax")
     data = F.softmax(data, dim=1)
+    print("net argmax")
     data = torch.argmax(data,dim=1)
+    print("net data")
     data = data.to('cpu').detach().numpy().copy()
+    print("net getlabel")
     return get_label(data)
 
 def get_label(lbl):
