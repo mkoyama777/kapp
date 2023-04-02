@@ -6,8 +6,5 @@ mkdir upload
 mkdir output
 git add .
 git commit -m "dummy"
-<<<<<<< HEAD
 git push origin xserver
-=======
-git push origin honban
->>>>>>> origin/honban
+
