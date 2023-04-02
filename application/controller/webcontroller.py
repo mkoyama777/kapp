@@ -178,11 +178,7 @@ def webhook(request,session):
         abort(400)
     #LINEより受信したリクエストがテキストか画像かを判定する
     if msgtype == "image":
-        #テキストの場合はuuidを生成する。
-        uuiddata = get_uuid(request)
-        #inputディレクトリにファイルを保存する
-        inputdir = get_abs_uploaddir(request)
-        outputdir = get_abs_outputdir(request)
+        reset(request)
         #LINEから画像を取得する
         message_content = line_bot_api.get_message_content(body['events'][0]['message']['id'])
         #画像をinputディレクトリに保存する
