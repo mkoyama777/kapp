@@ -12,7 +12,7 @@ from flask import *
 from pathlib import Path
 from werkzeug.utils import secure_filename
 from concurrent.futures import ProcessPoolExecutor
-from linebot import WebhookHandler
+from linebot import *
 from linebot.exceptions import InvalidSignatureError
 from linebot.models import MessageEvent, TextMessage, TextSendMessage
 UPLOAD_FOLDER = 'upload'
@@ -162,19 +162,42 @@ def download(request,session):
         # attachment_filename=fname)    
 
 handler = WebhookHandler("5da1e2c95b043c10849ff141cf7beef2")  
+# LINE Bot APIクライアントの初期化
+line_bot_api = LineBotApi("Y33TDISAJRQFqWKpAL2ET/k4abMEiToTrz7AObBuK5+a/2rljY5ORtUPqzwT+Mq+jLjIA50C49J0VS1m/qbROHTHuL9PffiH2+5CYZWEYcUoOJDB6zKqk2Sr4nogd234+Dl3a+DcPxpYlLbx2KGesgdB04t89/1O/w1cDnyilFU=")
 def webhook(request,session):
     #LINEのWEBHOOkからのリクエストを受け取る
     signature = request.headers['X-Line-Signature']
     body = request.get_data(as_text=True)
-    print("Request body: " + body)
+    #JSONを配列に変換する
+    body = json.loads(body)
+    msgtype = body['events'][0]['message']['type']
     #リクエストがLINE Platformから送られてきたものか検証する
     try:
         handler.handle(body, signature)
     except InvalidSignatureError:
         abort(400)
     #LINEより受信したリクエストがテキストか画像かを判定する
+    if msgtype == "image":
+        #テキストの場合はuuidを生成する。
+        uuiddata = get_uuid(request)
+        #inputディレクトリにファイルを保存する
+        inputdir = get_abs_uploaddir(request)
+        outputdir = get_abs_outputdir(request)
+        #LINEから画像を取得する
+        message_content = line_bot_api.get_message_content(body['events'][0]['message']['id'])
+        #画像をinputディレクトリに保存する
+        with open(inputdir + "/" + uuiddata + ".jpg", 'wb') as fd:
+            for chunk in message_content.iter_content():
+                fd.write(chunk)
+                #性別を推論する。
+                #年齢を性別する。
+                #性別/年齢をレスポンスで返す
+                #リクエストを受け取ったことをLINEに返す
+                line_bot_api.reply_message(body['events'][0]['replyToken'],TextSendMessage(text="性別/年齢を返す"))
+   
+    else:
+        print("対象外type")    
 
-    #テキストの場合はuuidを生成する。
 
     #画像の場合はuuidを生成する。
     #inputディレクトリにファイルを保存する
