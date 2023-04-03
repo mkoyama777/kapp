@@ -96,12 +96,13 @@ def predict(img):
     img = Image.fromarray(img)
     # image = Image.open(img).convert("RGB")
     print("sexnet2 transform")
+    print(str(img))
     data = None
     try:
         data = transform(img)
     except Exception as e:
         print("error transform")
-        print(e)
+        print(str(e))
 
     # 画像から配列に変換
     print("net instance")
