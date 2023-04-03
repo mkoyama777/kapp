@@ -55,8 +55,9 @@ print('----- info -----')
 #print('###########################################################\n')
 
 # check outputs directory
-
-def analyze(filetype,finput,foutputdir = None,foutputname = None):
+# チャネルアクセストークンを設定する
+line_bot_api = LineBotApi("Y33TDISAJRQFqWKpAL2ET/k4abMEiToTrz7AObBuK5+a/2rljY5ORtUPqzwT+Mq+jLjIA50C49J0VS1m/qbROHTHuL9PffiH2+5CYZWEYcUoOJDB6zKqk2Sr4nogd234+Dl3a+DcPxpYlLbx2KGesgdB04t89/1O/w1cDnyilFU=")
+def analyze(filetype,finput,foutputdir = None,foutputname = None,line_id = None):
     print("--------tracking start")
     net = cv2.dnn.readNetFromDarknet('./yoloface/cfg/yolov3-face.cfg', './yoloface/model-weights/yolov3-wider_16000.weights')
     net.setPreferableBackend(cv2.dnn.DNN_BACKEND_OPENCV)
@@ -123,7 +124,9 @@ def analyze(filetype,finput,foutputdir = None,foutputname = None):
         sex,age = post_process(frame, outs, CONF_THRESHOLD, NMS_THRESHOLD)
         # print('[i] ==> # detected faces: {}'.format(len(faces)))
         if foutputdir is None:
-            return sex,age
+            # ユーザーIDを指定してメッセージを送信する
+            line_bot_api.push_message(line_id, TextSendMessage(text='性別:'+sex+":年齢:"+age))
+            return
 
         print('#' * 10)
         # initialize the set of information we'll displaying on the frame

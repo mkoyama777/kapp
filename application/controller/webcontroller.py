@@ -173,6 +173,9 @@ def webhook(request,session):
     #JSONを配列に変換する
     body = json.loads(body_base)
     msgtype = body['events'][0]['message']['type']
+    #ユーザIDを取得する
+    line_id = body['events'][0]['source']['userId']
+    
     #リクエストがLINE Platformから送られてきたものか検証する
     try:
         handler.handle(body_base, signature)
@@ -198,13 +201,18 @@ def webhook(request,session):
         fd.close()
         #性別を推論する。
         print("推論開始")
-        sex,age = yolo.analyze("image",inputfilename)
-        print("性別:"+sex)
-        print("年齢:"+age)
+        # sex,age = yolo.analyze("image",inputfilename)
+        
+        outputdir = None
+        outputfilename = None
+        th = threading.Thread(target=yolo.analyze,args=[get_filetype(filename),inputfilepath,outputdir,outputfilename,line_id])
+        th.start()
+        # print("性別:"+sex)
+        # print("年齢:"+age)
         #年齢を性別する。
         #性別/年齢をレスポンスで返す
         #リクエストを受け取ったことをLINEに返す
-        line_bot_api.reply_message(body['events'][0]['replyToken'],TextSendMessage(text="性別:"+sex+":年齢:"+age))
+        # line_bot_api.reply_message(body['events'][0]['replyToken'],TextSendMessage(text="性別:"+sex+":年齢:"+age))
 
     else:
         print("対象外type")    
