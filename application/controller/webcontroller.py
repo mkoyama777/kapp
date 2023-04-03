@@ -194,6 +194,8 @@ def webhook(request,session):
         with open(inputfilename, 'wb') as fd:
             for chunk in message_content.iter_content():
                 fd.write(chunk)
+        #ファイルをクローズする
+        fd.close()
         #性別を推論する。
         print("推論開始")
         sex,age = yolo.analyze("image",inputfilename)
