@@ -7,7 +7,7 @@ import shutil
 import yoloface.yoloface as yolo
 import threading
 import glob
-import time
+
 from datetime import *
 from flask import *
 from pathlib import Path
@@ -16,6 +16,7 @@ from concurrent.futures import ProcessPoolExecutor
 from linebot import *
 from linebot.exceptions import InvalidSignatureError
 from linebot.models import MessageEvent, TextMessage, TextSendMessage
+import time
 UPLOAD_FOLDER = 'upload'
 OUTPUT_FOLDER = 'output'
 # UPLOAD_FOLDER = os.path.abspath(UPLOAD_FOLDER)
