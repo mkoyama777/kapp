@@ -199,6 +199,8 @@ def webhook(request,session):
                 fd.write(chunk)
         #ファイルをクローズする
         fd.close()
+        #1秒待つ
+        time.sleep(1)
         #性別を推論する。
         print("推論開始")
         # sex,age = yolo.analyze("image",inputfilename)
