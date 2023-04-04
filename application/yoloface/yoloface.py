@@ -72,12 +72,13 @@ def analyze(filetype,finput,foutputdir = None,foutputname = None,line_id = None)
     output_file = ''
     foutput = None
     if foutputdir is None:
-        print(foutputdir is None)
+        print("foutputdir is None")
     else:
         foutput = foutputdir +   "/tmp"+foutputname 
     cap = None
     # print("finput:"+finput)
     # print("filetype:"+filetype)
+    print(81)
     if filetype=="image":
         if not os.path.isfile(finput):
             # print("[!] ==> Input image file {} doesn't exist".format(finput))
@@ -93,7 +94,7 @@ def analyze(filetype,finput,foutputdir = None,foutputname = None,line_id = None)
     # else:
         # Get data from the camera
         # cap = cv2.VideoCapture(args.src)
-
+    print(97)
     # Get the video writer initialized to save the output video
     video_writer = None
     if filetype=="movie":
@@ -123,11 +124,12 @@ def analyze(filetype,finput,foutputdir = None,foutputname = None,line_id = None)
 
         # Runs the forward pass to get output of the output layers
         outs = net.forward(get_outputs_names(net))
-
+        print("post_process")
         # Remove the bounding boxes with low confidence
         sex,age = post_process(frame, outs, CONF_THRESHOLD, NMS_THRESHOLD)
         # print('[i] ==> # detected faces: {}'.format(len(faces)))
         if foutputdir is None:
+            print("push message")
             # ユーザーIDを指定してメッセージを送信する
             line_bot_api.push_message(line_id, TextSendMessage(text='性別:'+sex+":年齢:"+age))
             return
