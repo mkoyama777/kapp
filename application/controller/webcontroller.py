@@ -212,6 +212,7 @@ def webhook(request,session):
         print("Lineid:"+line_id)
         # th = threading.Thread(target=yolo.analyze,args=[get_filetype(filename),inputfilename,outputdir,outputfilename,line_id])
         # th.start()
+        print("ファイルサイズ:"+os.path.getsize(inputfilename))
         sex,age = yolo.analyze(get_filetype(filename),inputfilename,outputdir,outputfilename)
         # print("性別:"+sex)
         # print("年齢:"+age)
