@@ -69,6 +69,7 @@ def analyze(filetype,finput,foutputdir = None,foutputname = None,line_id = None)
 
     # wind_name = 'face detection using YOLOv3'
     #cv2.namedWindow(wind_name, cv2.WINDOW_NORMAL)
+    print(72)
     output_file = ''
     foutput = None
     if foutputdir is None:
