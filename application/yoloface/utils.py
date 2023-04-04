@@ -84,6 +84,7 @@ def post_process(frame, outs, conf_threshold, nms_threshold):
     confidences = []
     boxes = []
     final_boxes = []
+    print("outs:87")
     for out in outs:
         for detection in out:
             scores = detection[5:]
@@ -105,6 +106,7 @@ def post_process(frame, outs, conf_threshold, nms_threshold):
                                nms_threshold)
     sex = ""
     age = 0
+    print("indices:108")
     for i in indices:
         print("face detect:"+str(i))
         # i = i[0]
@@ -178,6 +180,7 @@ def post_process(frame, outs, conf_threshold, nms_threshold):
         # height = box[3]
         # left, top, right, bottom = refined_box(left, top, width, height)
         draw_predict(frame, sex ,age, left, top, right, bottom)
+    print("post_process end")
     return sex,age
 
 

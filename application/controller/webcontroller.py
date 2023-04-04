@@ -206,14 +206,15 @@ def webhook(request,session):
         outputdir = None
         outputfilename = None
         print("Lineid:"+line_id)
-        th = threading.Thread(target=yolo.analyze,args=[get_filetype(filename),inputfilename,outputdir,outputfilename,line_id])
-        th.start()
+        # th = threading.Thread(target=yolo.analyze,args=[get_filetype(filename),inputfilename,outputdir,outputfilename,line_id])
+        # th.start()
+        sex,age = yolo.analyze(get_filetype(filename),inputfilename,outputdir,outputfilename)
         # print("性別:"+sex)
         # print("年齢:"+age)
         #年齢を性別する。
         #性別/年齢をレスポンスで返す
         #リクエストを受け取ったことをLINEに返す
-        # line_bot_api.reply_message(body['events'][0]['replyToken'],TextSendMessage(text="性別:"+sex+":年齢:"+age))
+        line_bot_api.reply_message(body['events'][0]['replyToken'],TextSendMessage(text="性別:"+sex+":年齢:"+age))
 
     else:
         print("対象外type")    

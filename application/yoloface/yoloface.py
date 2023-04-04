@@ -132,8 +132,11 @@ def analyze(filetype,finput,foutputdir = None,foutputname = None,line_id = None)
         if foutputdir is None:
             print("push message:"+sex+":"+age)
             # ユーザーIDを指定してメッセージを送信する
-            line_bot_api.push_message(line_id, TextSendMessage(text='性別:'+sex+":年齢:"+age))
-            return
+            if line_id is not None:
+                return sex,age
+            else:
+                line_bot_api.push_message(line_id, TextSendMessage(text='性別:'+sex+":年齢:"+age))
+                return
 
         print('#' * 10)
         # initialize the set of information we'll displaying on the frame
