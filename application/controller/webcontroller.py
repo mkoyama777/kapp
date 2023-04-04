@@ -205,6 +205,7 @@ def webhook(request,session):
         
         outputdir = None
         outputfilename = None
+        print("Lineid:"+line_id)
         th = threading.Thread(target=yolo.analyze,args=[get_filetype(filename),inputfilename,outputdir,outputfilename,line_id])
         th.start()
         # print("性別:"+sex)

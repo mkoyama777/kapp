@@ -130,7 +130,7 @@ def analyze(filetype,finput,foutputdir = None,foutputname = None,line_id = None)
         sex,age = post_process(frame, outs, CONF_THRESHOLD, NMS_THRESHOLD)
         # print('[i] ==> # detected faces: {}'.format(len(faces)))
         if foutputdir is None:
-            print("push message")
+            print("push message:"+sex+":"+age)
             # ユーザーIDを指定してメッセージを送信する
             line_bot_api.push_message(line_id, TextSendMessage(text='性別:'+sex+":年齢:"+age))
             return
