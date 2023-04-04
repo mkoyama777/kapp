@@ -202,7 +202,7 @@ def webhook(request,session):
         #ファイルをクローズする
         fd.close()
         #1秒待つ
-        time.sleep(1)
+        time.sleep(2)
         #性別を推論する。
         print("推論開始")
         # sex,age = yolo.analyze("image",inputfilename)
