@@ -22,7 +22,9 @@ import time
 import argparse
 import sys
 import os
-from yoloface.sexmodel.sexnet2 import *
+# from yoloface.sexmodel.sexnet2 import *
+from yoloface.sexmodel.sexnet_resnet50 import *
+
 from linebot import *
 from linebot.exceptions import InvalidSignatureError
 from linebot.models import MessageEvent, TextMessage, TextSendMessage
@@ -132,12 +134,16 @@ def analyze(filetype,finput,foutputdir = None,foutputname = None,line_id = None)
         if foutputdir is None:
             print("push message:"+sex+":"+age)
             # ユーザーIDを指定してメッセージを送信する
-            if line_id is not None:
-                return sex,age
-            else:
-                line_bot_api.push_message(line_id, TextSendMessage(text='性別:'+sex+":年齢:"+age))
-                return
-
+            try:
+                if line_id is None:
+                    print("rtn sex:age"+sex+":"+age)
+                    return sex,age
+                else:
+                    print("send push")
+                    line_bot_api.push_message(line_id, TextSendMessage(text='性別:'+sex+":年齢:"+age))
+                    return
+            except Exception as e:
+                print(e)
         print('#' * 10)
         # initialize the set of information we'll displaying on the frame
         # info = [

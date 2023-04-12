@@ -50,6 +50,7 @@ def download():
 
 @app.route("/webhook",methods=["GET","POST"])
 def webhook():
+    # return "OK"
     return webctl.webhook(request,session)
 
 @app.route("/init",methods=["GET"])

@@ -4,10 +4,11 @@ import os
 import random
 import uuid
 import shutil
-import yoloface.yoloface as yolo
+# import yoloface.yoloface as yolo
+import iccardmodel.iccardnet as iccard
 import threading
 import glob
-
+from PIL import Image
 from datetime import *
 from flask import *
 from pathlib import Path
@@ -183,6 +184,7 @@ def webhook(request,session):
         handler.handle(body_base, signature)
     except InvalidSignatureError:
         abort(400)
+    
     #LINEより受信したリクエストがテキストか画像かを判定する
     if msgtype == "image":
         uuiddata = reset(request)
@@ -202,7 +204,7 @@ def webhook(request,session):
         #ファイルをクローズする
         fd.close()
         #1秒待つ
-        time.sleep(2)
+        # time.sleep(2)
         #性別を推論する。
         print("推論開始")
         # sex,age = yolo.analyze("image",inputfilename)
@@ -212,8 +214,13 @@ def webhook(request,session):
         print("Lineid:"+line_id)
         # th = threading.Thread(target=yolo.analyze,args=[get_filetype(filename),inputfilename,outputdir,outputfilename,line_id])
         # th.start()
-        print("ファイルサイズ:"+os.path.getsize(inputfilename))
-        sex,age = yolo.analyze(get_filetype(filename),inputfilename,outputdir,outputfilename)
+        print(inputfilename)
+        # try:
+        #     print("ファイルサイズ:"+os.path.getsize(inputfilename))
+        # except Exception as e:
+        #     print(e)
+        img = Image.open(inputfilename)
+        sex,age = iccard.predict(img)
         # print("性別:"+sex)
         # print("年齢:"+age)
         #年齢を性別する。

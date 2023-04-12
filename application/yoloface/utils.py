@@ -16,7 +16,8 @@
 import datetime
 import numpy as np
 import cv2
-import yoloface.sexmodel.sexnet2 as snet
+# import yoloface.sexmodel.sexnet2 as snet
+import yoloface.sexmodel.sexnet_resnet50 as snet
 import yoloface.agemodel.agenet as anet
 from PIL import Image
 # -------------------------------------------------------------------
