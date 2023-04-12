@@ -5,7 +5,7 @@ import random
 import uuid
 import shutil
 # import yoloface.yoloface as yolo
-import iccardmodel.iccardnet as iccard
+import iccardmodel.iccard as iccard
 import threading
 import glob
 from PIL import Image
