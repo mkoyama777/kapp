@@ -220,13 +220,13 @@ def webhook(request,session):
         # except Exception as e:
         #     print(e)
         img = Image.open(inputfilename)
-        sex,age = iccard.predict(img)
+        label = iccard.predict(img)
         # print("性別:"+sex)
         # print("年齢:"+age)
         #年齢を性別する。
         #性別/年齢をレスポンスで返す
         #リクエストを受け取ったことをLINEに返す
-        line_bot_api.reply_message(body['events'][0]['replyToken'],TextSendMessage(text="性別:"+sex+":年齢:"+age))
+        line_bot_api.reply_message(body['events'][0]['replyToken'],TextSendMessage(text=label))
 
     else:
         print("対象外type")    
