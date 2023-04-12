@@ -18,3 +18,4 @@ scikit-learn
 scipy
 tqdm
 torchmetrics
+pytorch_lightning
