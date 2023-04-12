@@ -20,3 +20,4 @@ tqdm
 torchmetrics
 pytorch_lightning
 natsort
+line-bot-sdk
