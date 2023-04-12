@@ -11,4 +11,9 @@ pycparser==2.21
 requests==2.27.1
 setuptools==58.0.4
 gunicorn==20.1.0
-matplotlib
+matplotlib==3.4.3
+torch
+torchvision
+scikit-learn
+scipy
+tqdm
