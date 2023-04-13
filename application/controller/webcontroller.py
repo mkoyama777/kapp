@@ -164,9 +164,9 @@ def download(request,session):
         # as_attachment=True)
         # attachment_filename=fname)    
 
-handler = WebhookHandler("5da1e2c95b043c10849ff141cf7beef2")  
+handler = WebhookHandler("35346a0da38fce1d5e481ba009457c12")  
 # LINE Bot APIクライアントの初期化
-line_bot_api = LineBotApi("Y33TDISAJRQFqWKpAL2ET/k4abMEiToTrz7AObBuK5+a/2rljY5ORtUPqzwT+Mq+jLjIA50C49J0VS1m/qbROHTHuL9PffiH2+5CYZWEYcUoOJDB6zKqk2Sr4nogd234+Dl3a+DcPxpYlLbx2KGesgdB04t89/1O/w1cDnyilFU=")
+line_bot_api = LineBotApi("TjTs9XIJkLk0SogrGYT/uskhphTWH6UDL6lFtaHYWEG6mUHcZ8trV2f+brXv+2RlAZdgQWIgvYICMiMkVyJDD2X2cCorXwSQaPEl4rNXoqlg6Qnk/+Xu1TW06YSNDQTe8GTRmUM356WICWryg0mbUAdB04t89/1O/w1cDnyilFU=")
 def webhook(request,session):
     #LINEのWEBHOOkからのリクエストを受け取る
     signature = request.headers['X-Line-Signature']
