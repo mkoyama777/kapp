@@ -51,9 +51,11 @@ class Net(pl.LightningModule):
         return h
     
 #iccardmodel/get_models.shを実行する
+print("---get_models.sh---")
 os.system('iccardmodel/get_models.sh')
 #iccardmodel/iccard.ptが存在するか確認する
 timecnt = 0 
+
 while True:
     timecnt += 1
     if os.path.exists('iccardmodel/iccard.pt'):
@@ -61,12 +63,13 @@ while True:
     if(timecnt > 60):
         break
     time.sleep(1)
-
+print("---load model---")
 parent_dir = "iccardmodel"+os.sep
 parent_dir = os.path.abspath(parent_dir)
 net = Net().cpu().eval()
+print("---load statedict---")
 net.load_state_dict(torch.load(parent_dir+os.sep+'iccard.pt', map_location=torch.device('cpu')))
-
+print("---load statedict end---")
 def predict(img):
     print("---predict---")
     img = Image.fromarray(img)
