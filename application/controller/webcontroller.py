@@ -169,6 +169,7 @@ handler = WebhookHandler("35346a0da38fce1d5e481ba009457c12")
 # LINE Bot APIクライアントの初期化
 line_bot_api = LineBotApi("TjTs9XIJkLk0SogrGYT/uskhphTWH6UDL6lFtaHYWEG6mUHcZ8trV2f+brXv+2RlAZdgQWIgvYICMiMkVyJDD2X2cCorXwSQaPEl4rNXoqlg6Qnk/+Xu1TW06YSNDQTe8GTRmUM356WICWryg0mbUAdB04t89/1O/w1cDnyilFU=")
 def webhook(request,session):
+    print("---------webhook")
     #LINEのWEBHOOkからのリクエストを受け取る
     signature = request.headers['X-Line-Signature']
     body_base = request.get_data(as_text=True)
