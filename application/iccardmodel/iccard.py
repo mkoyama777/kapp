@@ -64,14 +64,20 @@ net = Net().cpu().eval()
 net.load_state_dict(torch.load(parent_dir+os.sep+'iccard.pt', map_location=torch.device('cpu')))
 
 def predict(img):
+    print("---predict---")
     img = Image.fromarray(img)
     # image = Image.open(img).convert("RGB")
+    print("---transform---")
     data = transform(img)
+    print("---make net---")
     # 画像から配列に変換
     data = net(data.unsqueeze(0))
+    print("---softmax---")
     data = F.softmax(data, dim=1)
+    print("--argmax---")
     data = torch.argmax(data,dim=1)
     data = data.to('cpu').detach().numpy().copy()
+    print("--getlabel---")
     return get_label(data)
 
 def get_label(lbl):
