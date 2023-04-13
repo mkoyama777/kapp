@@ -55,6 +55,7 @@ print("---get_models.sh---")
 os.system('iccardmodel/get_models.sh')
 #iccardmodel/iccard.ptが存在するか確認する
 timecnt = 0 
+print("------------------pwd ------------------")
 os.system('pwd')
 while True:
     timecnt += 1
@@ -64,6 +65,7 @@ while True:
         break
     time.sleep(1)
 print("---load model---")
+print("------------------pwd ------------------")
 os.system('pwd')
 parent_dir = "iccardmodel"+os.sep
 parent_dir = os.path.abspath(parent_dir)
