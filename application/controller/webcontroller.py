@@ -18,6 +18,7 @@ from linebot import *
 from linebot.exceptions import InvalidSignatureError
 from linebot.models import MessageEvent, TextMessage, TextSendMessage
 import time
+import numpy as np
 UPLOAD_FOLDER = 'upload'
 OUTPUT_FOLDER = 'output'
 # UPLOAD_FOLDER = os.path.abspath(UPLOAD_FOLDER)
@@ -220,7 +221,9 @@ def webhook(request,session):
         # except Exception as e:
         #     print(e)
         img = Image.open(inputfilename)
-        label = iccard.predict(img)
+        img_array = np.array(img)
+
+        label = iccard.predict(img_array)
         # print("性別:"+sex)
         # print("年齢:"+age)
         #年齢を性別する。
