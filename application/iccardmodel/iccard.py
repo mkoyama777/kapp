@@ -67,7 +67,7 @@ while True:
 print("---load model---")
 print("------------------pwd ------------------")
 os.system('pwd')
-parent_dir = "iccardmodel"+os.sep
+parent_dir = "/opt/render/project/src/application/iccardmodel"
 parent_dir = os.path.abspath(parent_dir)
 net = Net().cpu().eval()
 print("---load statedict---")
