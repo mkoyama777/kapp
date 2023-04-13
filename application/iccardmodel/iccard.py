@@ -53,8 +53,12 @@ class Net(pl.LightningModule):
 #iccardmodel/get_models.shを実行する
 os.system('iccardmodel/get_models.sh')
 #iccardmodel/iccard.ptが存在するか確認する
+timecnt = 0 
 while True:
+    timecnt += 1
     if os.path.exists('iccardmodel/iccard.pt'):
+        break
+    if(timecnt > 60):
         break
     time.sleep(1)
 
