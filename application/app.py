@@ -51,7 +51,10 @@ def download():
 @app.route("/webhook",methods=["GET","POST"])
 def webhook():
     print("---webcontroller webhook")
-    return webctl.webhook(request,session)
+    try:
+        return webctl.webhook(request,session)
+    except Exception as e:
+        print(e)
 
 @app.route("/init",methods=["GET"])
 def init():
