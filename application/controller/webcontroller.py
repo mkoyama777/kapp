@@ -186,25 +186,27 @@ def webhook(request,session):
         handler.handle(body_base, signature)
     except InvalidSignatureError:
         abort(400)
-    
+    print("189")
     #LINEより受信したリクエストがテキストか画像かを判定する
     if msgtype == "image":
         uuiddata = reset(request)
-        
+        print("image")
         inputdir = get_abs_uploaddir(request,uuiddata)
-
+        print("195")
         #ファイル名を取得する
         
         #LINEから画像を取得する
         message_content = line_bot_api.get_message_content(body['events'][0]['message']['id'])
         filename = "line.jpg"
         inputfilename = inputdir + os.sep +  filename
+        print("inputを保存")
         #画像をinputディレクトリに保存する
         with open(inputfilename, 'wb') as fd:
             for chunk in message_content.iter_content():
                 fd.write(chunk)
         #ファイルをクローズする
         fd.close()
+        
         #1秒待つ
         # time.sleep(2)
         #性別を推論する。
@@ -223,13 +225,14 @@ def webhook(request,session):
         #     print(e)
         img = Image.open(inputfilename)
         img_array = np.array(img)
-
+        print("predict")
         label = iccard.predict(img_array)
         # print("性別:"+sex)
         # print("年齢:"+age)
         #年齢を性別する。
         #性別/年齢をレスポンスで返す
         #リクエストを受け取ったことをLINEに返す
+        print("reply")
         line_bot_api.reply_message(body['events'][0]['replyToken'],TextSendMessage(text=label))
 
     else:
