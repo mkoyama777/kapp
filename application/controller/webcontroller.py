@@ -172,6 +172,7 @@ print("-----------LINE API 初期化 END")
     
 def webhook(request,session):
     print("---------webhook")
+    return "OK"
     #LINEのWEBHOOkからのリクエストを受け取る
     signature = request.headers['X-Line-Signature']
     body_base = request.get_data(as_text=True)
