@@ -168,6 +168,7 @@ def download(request,session):
 handler = WebhookHandler("35346a0da38fce1d5e481ba009457c12")  
 # LINE Bot APIクライアントの初期化
 line_bot_api = LineBotApi("TjTs9XIJkLk0SogrGYT/uskhphTWH6UDL6lFtaHYWEG6mUHcZ8trV2f+brXv+2RlAZdgQWIgvYICMiMkVyJDD2X2cCorXwSQaPEl4rNXoqlg6Qnk/+Xu1TW06YSNDQTe8GTRmUM356WICWryg0mbUAdB04t89/1O/w1cDnyilFU=")
+    
 def webhook(request,session):
     print("---------webhook")
     #LINEのWEBHOOkからのリクエストを受け取る
@@ -184,8 +185,9 @@ def webhook(request,session):
     #リクエストがLINE Platformから送られてきたものか検証する
     try:
         handler.handle(body_base, signature)
-    except InvalidSignatureError:
-        abort(400)
+    except InvalidSignatureError as e:
+        print(e)
+        raise e
     print("189")
     #LINEより受信したリクエストがテキストか画像かを判定する
     if msgtype == "image":

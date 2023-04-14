@@ -55,6 +55,7 @@ def webhook():
         return webctl.webhook(request,session)
     except Exception as e:
         print(e)
+        raise e
 
 @app.route("/init",methods=["GET"])
 def init():
