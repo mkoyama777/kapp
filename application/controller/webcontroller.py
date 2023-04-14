@@ -172,7 +172,7 @@ print("-----------LINE API 初期化 END")
     
 def webhook(request,session):
     print("---------webhook")
-    return "OK"
+    
     #LINEのWEBHOOkからのリクエストを受け取る
     signature = request.headers['X-Line-Signature']
     body_base = request.get_data(as_text=True)
@@ -198,7 +198,7 @@ def webhook(request,session):
         inputdir = get_abs_uploaddir(request,uuiddata)
         print("195")
         #ファイル名を取得する
-        
+        return "OK"
         #LINEから画像を取得する
         message_content = line_bot_api.get_message_content(body['events'][0]['message']['id'])
         filename = "line.jpg"
