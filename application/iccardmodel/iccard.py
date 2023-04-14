@@ -73,6 +73,7 @@ net = Net().cpu().eval()
 print("---load statedict---")
 net.load_state_dict(torch.load(parent_dir+os.sep+'iccard.pt', map_location=torch.device('cpu')))
 print("---load statedict end---")
+
 def predict(img):
     print("---predict---")
     img = Image.fromarray(img)

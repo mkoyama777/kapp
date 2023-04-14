@@ -164,10 +164,11 @@ def download(request,session):
         # path=abs_dirname + os.sep +fname,
         # as_attachment=True)
         # attachment_filename=fname)    
-
+print("-----------LINE API 初期化")
 handler = WebhookHandler("35346a0da38fce1d5e481ba009457c12")  
 # LINE Bot APIクライアントの初期化
 line_bot_api = LineBotApi("TjTs9XIJkLk0SogrGYT/uskhphTWH6UDL6lFtaHYWEG6mUHcZ8trV2f+brXv+2RlAZdgQWIgvYICMiMkVyJDD2X2cCorXwSQaPEl4rNXoqlg6Qnk/+Xu1TW06YSNDQTe8GTRmUM356WICWryg0mbUAdB04t89/1O/w1cDnyilFU=")
+print("-----------LINE API 初期化 END")
     
 def webhook(request,session):
     print("---------webhook")
