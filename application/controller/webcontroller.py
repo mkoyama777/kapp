@@ -198,7 +198,7 @@ def webhook(request,session):
         inputdir = get_abs_uploaddir(request,uuiddata)
         print("195")
         #ファイル名を取得する
-        return "OK"
+        # return "OK"
         #LINEから画像を取得する
         message_content = line_bot_api.get_message_content(body['events'][0]['message']['id'])
         filename = "line.jpg"

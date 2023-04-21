@@ -51,6 +51,7 @@ def download():
 @app.route("/webhook",methods=["GET","POST"])
 def webhook():
     print("---webcontroller webhook")
+    # return "OK"
     try:
         return webctl.webhook(request,session)
     except Exception as e:
@@ -61,7 +62,7 @@ def webhook():
 def init():
     print("-----------------------init start ")
     #subprocess.run("./yoloface/get_models.sh")
-    subprocess.Popen("./yoloface/get_models.sh")
+    #subprocess.Popen("./yoloface/get_models.sh")
     print("-----------------------end")
     return webctl.index(request,session)
 
